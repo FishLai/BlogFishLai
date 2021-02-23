@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add article</title>
+</head>
+<body>
+    <header></header>
+    <main>
+        <section>
+            <form th:action="@{/article}" method="post">
+                <div>
+                    <lable for="title">title</lable>
+                    <div><input type="text" name="title" id="title" placeholder="title" /></div>
+                </div>
+                <div>
+                    <label for="body">body</label>
+                    <div><input type="textarea" name="body" id="body" placeholder="body" /></div>
+                </div>
+                <div>
+                    <div><input type="submit" value="提交" class="btn btn-info" /></div>
+                </div>
+            </form>
+        </section>
+    </main>
+    <footer></footer>
+</body>
+</html>
