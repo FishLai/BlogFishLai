@@ -1,0 +1,42 @@
+html, body {
+    margin: 0;
+    height:100%;
+}
+
+h1 {
+    margin:0;
+}
+
+header {
+    height: 20%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcome {
+    text-align:center;
+}
+
+section.container {
+    display: flex;
+    height: 75%;
+    background-color: hsl(0, 30%, 95%);
+}
+
+.left-side {
+    flex-grow:1;
+}
+
+.main-content {
+    flex-grow: 3;
+}
+
+.right-side {
+    flex-grow: 2;
+}
+
+footer {
+    height: 5%;
+    text-align: right;
+}

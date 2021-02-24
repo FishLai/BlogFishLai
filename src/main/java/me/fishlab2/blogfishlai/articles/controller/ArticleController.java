@@ -48,7 +48,7 @@ public class ArticleController {
     }
 
     @DeleteMapping("/{id}")
-    public String del(@PathVariable("id") long id) {
+    public String del(@PathVariable("id") long id) throws Exception{
         articleRepository.deleteById(id);
         return "redirect:";
     }
