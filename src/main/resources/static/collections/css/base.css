@@ -14,6 +14,10 @@ header {
     align-items: center;
 }
 
+img {
+    width:100%;
+}
+
 .welcome {
     text-align:center;
 }
@@ -26,14 +30,17 @@ section.container {
 
 .left-side {
     flex-grow:1;
+    min-width: 2.4525%;
 }
 
 .main-content {
     flex-grow: 3;
+    min-width: 64.6875%
 }
 
 .right-side {
     flex-grow: 2;
+    min-width: 28.57%
 }
 
 footer {

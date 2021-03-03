@@ -36,3 +36,16 @@
 `lombok 簡化程式碼工具`  
 `spring-boot-starter-test 測試工具`  
 `spring-boot-devtools 熱部屬工具`
+
+##Live Server setup
+###maven
+spring-boot-devtools  
+\<optional true />
+### IDEA setting 
+(ctrl+alt+s) setting > build...> compiler turn on auto build  
+(ctrl+shift+alt+/) compile..auto.. turn on
+### properties setting
+spring.thymeleaf.cache=false
+
+
+

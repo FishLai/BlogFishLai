@@ -34,10 +34,10 @@ public class ExhibitionCRUDTest {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         MyCollection myCollection = new MyCollection();
         myCollection.setName("test2");
-        myCollection.setColl_abs("it is a test2");
-        myCollection.setCover_path("/");
+        myCollection.setCollAbs("it is a test2");
+        myCollection.setCoverPath("/");
         try {
-            myCollection.setStart_date(sdf.parse("2021-02-26"));
+            myCollection.setStartDate(sdf.parse("2021-02-26"));
         } catch (ParseException e) {
             System.err.println("抓到爬去日期意外事件：" + e);
         }
@@ -97,8 +97,8 @@ public class ExhibitionCRUDTest {
 
     @Test
     public void updateColl() {
-        MyCollection  myCollection = myCollectionRepository.findById(3);
-        myCollection.setColl_abs("this is test update3");
+        MyCollection  myCollection = myCollectionRepository.findById(2);
+        myCollection.setCoverPath("collections/img/admin/my_collection/cover_my_collection.JPG");
         myCollectionRepository.save(myCollection);
     }
 

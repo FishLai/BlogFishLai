@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.List;
 
@@ -16,24 +17,25 @@ public class MyCollection {
     @Column(name="coll_no")
     private long id;
 
+    @NotBlank(message="請填入作品名稱")
     @Column(name="coll_name", nullable=false, columnDefinition="varchar(20) unique")
     private String name;
 
     @Temporal(TemporalType.DATE)
     @Column(name="start_date", nullable=false)
-    private Date start_date;
+    private Date startDate;
     //@OneToMay(cascade = CascadeType.ALL)
 
     @Temporal(TemporalType.DATE)
     @Column(name="stop_date", nullable=true)
-    private Date stop_date;
+    private Date stopDate;
 
+    @NotBlank(message="請稍作說明")
     @Column(name="coll_abstract", nullable=true, columnDefinition="varchar(200)")
-    private String coll_abs;
+    private String collAbs;
 
-    @Column(name="cover_path", columnDefinition="varchar(50)")
-    private String cover_path;
-
+    @Column(name="cover_path", columnDefinition="varchar(150)")
+    private String coverPath;
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy="coll")
     @ToString.Exclude

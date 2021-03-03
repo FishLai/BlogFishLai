@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="/collections/css/base.css">
+    <link rel="stylesheet" href="/collections/css/css-addColl.css">
+
+    <title>Add a Collection</title>
+</head>
+<body>
+<form th:action="@{/test}" th:object="${myCollection}" method="post" id="form-add">
+    <div id="fields-container">
+        <div class="field">
+            <span>作品名稱：</span>
+            <span><input type="text" th:field="*{name}" /></span>
+            <span class="warn" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">名稱不合法</span>
+        </div>
+        <div class="field">
+            <span>製作開始：</span>
+            <span><input type="date" /></span>
+        </div>
+        <div class="field">
+            <span>製作結束：</span>
+            <span><input type="date" /></span>
+        </div>
+        <div class="field">
+            <span>作品說明：</span>
+            <textarea></textarea>
+        </div>
+        <div class="form-btnbox">
+            <span>
+                <button type="submit">提交</button>
+            </span>
+            <span>
+                <button type="button">返回</button>
+            </span>
+        </div>
+    </div>
+</form>
+</body>
+</html>

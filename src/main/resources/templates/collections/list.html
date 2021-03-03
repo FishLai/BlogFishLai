@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
 
-    <link rel="stylesheet" href="../../static/collections/css/base.css">
+    <link rel="stylesheet" href="collections/css/base.css">
+    <link rel="stylesheet" href="collections/css/css-counter.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
     <title>Code Collections</title>
 </head>
@@ -20,10 +21,31 @@
 <section class="container">
     <aside class="left-side"></aside>
     <main class="main-content">
-        <div class="item"></div>
+        <section id="coll-container" class="">
+            <div class="counter" th:each="item:${collList.content}">
+                <div class="cover" th:if="${item.coverPath}!=null">
+                    <span th:text="${item.coverPath}"></span>
+                    <img src="collections/img/admin/my_collection/cover_my_collection.png" alt="still findiing" />
+                </div>
+                <div class="counter-description">
+                    <h1 th:text="${item.name}"></h1>
+                </div>
+            </div>
+            <div class="box box-btn">
+                <button class="btn-add-coll">+</button>
+            </div>
+        </section>
     </main>
-    <aside class="right-side">right aside</aside>
+    <aside class="right-side">
+        <section id="coll-intro">
+            <div v-if="!isActive">
+                <span>說明測試</span>
+            </div>
+        </section>
+    </aside>
 </section>
 <footer>create by 賴冠瑜</footer>
+
+<script type="text/javascript" src="collections/js/vue-showCollDescript.js"></script>
 </body>
 </html>

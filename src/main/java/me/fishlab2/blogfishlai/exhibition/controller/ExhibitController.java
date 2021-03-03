@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -28,6 +29,13 @@ public class ExhibitController {
         System.out.println(collList);
         ModelAndView mav = new ModelAndView("collections/list");
         mav.addObject("collList", collList);
+        return mav;
+    }
+
+    @RequestMapping("/add")
+    public ModelAndView addColl() {
+        ModelAndView mav = new ModelAndView("collections/addColl");
+        mav.addObject("myCollection", new MyCollection());
         return mav;
     }
 }

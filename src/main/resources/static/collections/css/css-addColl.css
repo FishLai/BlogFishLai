@@ -1,0 +1,25 @@
+#form-add {
+    height:100%;
+    width:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#fields-container {
+    border-width: 1.5px;
+    border-color: hsl(60, 50%, 50%);
+    border-style: solid;
+    border-radius: 30px;
+    position:relative;
+    top:-10%;
+    padding: 50px;
+}
+
+.field {
+    margin: 5px;
+}
+
+.form-btnbox {
+    text-align: end;
+}
