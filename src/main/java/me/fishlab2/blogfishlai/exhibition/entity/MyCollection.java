@@ -18,7 +18,7 @@ public class MyCollection {
     private long id;
 
     @NotBlank(message="請填入作品名稱")
-    @Column(name="coll_name", nullable=false, columnDefinition="varchar(20) unique")
+    @Column(name="coll_name", nullable=false, columnDefinition="varchar(40) unique")
     private String name;
 
     @Temporal(TemporalType.DATE)
@@ -31,7 +31,7 @@ public class MyCollection {
     private Date stopDate;
 
     @NotBlank(message="請稍作說明")
-    @Column(name="coll_abstract", nullable=true, columnDefinition="varchar(200)")
+    @Column(name="coll_abstract", nullable=true, columnDefinition="varchar(1000)")
     private String collAbs;
 
     @Column(name="cover_path", columnDefinition="varchar(150)")

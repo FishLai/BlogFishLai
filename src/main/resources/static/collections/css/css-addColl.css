@@ -12,14 +12,43 @@
     border-style: solid;
     border-radius: 30px;
     position:relative;
-    top:-10%;
     padding: 50px;
+    font-size:1.5rem;
+}
+
+#fields-container input {
+    font-size:1.5rem;
 }
 
 .field {
     margin: 5px;
 }
+.isTextarea {
+    display: flex;
+    align-items: start;
+}
 
 .form-btnbox {
     text-align: end;
+}
+
+#name {
+    border-width: 0 0 1px 0;
+    font-size: 2rem;
+}
+#name:focus {
+    outline-width: 0;
+    border-width: 0 0 2px 0;
+}
+.coll-name {
+    font-size: 2rem;
+}
+
+textarea {
+    resize:none;
+    font-size: 1.5rem;
+}
+
+.uploadbox {
+    height: 300px;
 }

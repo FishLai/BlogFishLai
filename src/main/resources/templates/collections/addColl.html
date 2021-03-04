@@ -5,28 +5,45 @@
 
     <link rel="stylesheet" href="/collections/css/base.css">
     <link rel="stylesheet" href="/collections/css/css-addColl.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
 
     <title>Add a Collection</title>
 </head>
 <body>
 <form th:action="@{/test}" th:object="${myCollection}" method="post" id="form-add">
     <div id="fields-container">
-        <div class="field">
+        <div id="imgVue" class="field uploadbox">
+            <template v-if="!isImgUploaded">
+                <span v-on="{change:loadImg}" style="display:none;"><input id="f-upload" type="file" accept="image/*"></span>
+                <svg v-on="{click:uploadImg}" viewbox="0 0 200 200" width="100%" height="100%" preserveAspectRatio="none" >
+                    <g stroke="hsl(90, 50%, 50%)" stroke-width="3px" fill="none" stroke-dasharray="5, 5">
+                        <path d="M3 3 L3 197 L197 197 L197 3 Z"/>
+                        <path d="M3 3 L197 197"/>
+                        <path d="M3 197 L197 3"/>
+                    </g>
+                </svg>
+            </template>
+            <template v-else>
+                loadImage
+                <img id="previewCover" />
+            </template>
+        </div>
+        <div class="field coll-name">
             <span>作品名稱：</span>
-            <span><input type="text" th:field="*{name}" /></span>
+            <span><input id="name" type="text" th:field="*{name}" maxlength="40" placeholder="輸入作品名稱" autofocus required/></span>
             <span class="warn" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">名稱不合法</span>
         </div>
         <div class="field">
             <span>製作開始：</span>
-            <span><input type="date" /></span>
+            <span><input type="Month" min="1900-01" class="f-month"/></span>
         </div>
         <div class="field">
             <span>製作結束：</span>
-            <span><input type="date" /></span>
+            <span><input type="Month" min="1900-01" class="f-month"/></span>
         </div>
-        <div class="field">
+        <div class="field isTextarea">
             <span>作品說明：</span>
-            <textarea></textarea>
+            <textarea cols="100" rows="10" maxlength="1000"></textarea>
         </div>
         <div class="form-btnbox">
             <span>
@@ -38,5 +55,19 @@
         </div>
     </div>
 </form>
+
+<script>
+    var date = new Date();
+    var tY = date.getFullYear(); //this year
+    var tM = String(date.getMonth()+1).padStart(2, '0'); //getMonth() return 0-11 this month index
+    var maxMonth = tY + '-' + tM;
+
+    var f_month = document.getElementsByClassName("f-month"); //month fields
+    for(let i=0; i<f_month.length; i++) {
+        f_month[i].setAttribute("max", maxMonth);
+    }
+</script>
+
+<script type="text/javascript" src="../collections/js/vue-addform-img.js"></script>
 </body>
 </html>
