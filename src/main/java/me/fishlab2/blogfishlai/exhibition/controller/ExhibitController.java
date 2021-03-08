@@ -8,10 +8,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -38,4 +41,12 @@ public class ExhibitController {
         mav.addObject("myCollection", new MyCollection());
         return mav;
     }
+
+    @PostMapping("")
+    public String saveCollection(@Valid MyCollection mC, RedirectAttributes attr) {
+
+        attr.addFlashAttribute("myCollection", mC);
+        return "redirect:/mycollection/";
+    }
+
 }

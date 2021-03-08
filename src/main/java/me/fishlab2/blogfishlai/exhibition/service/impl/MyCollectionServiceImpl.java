@@ -23,4 +23,7 @@ public class MyCollectionServiceImpl implements My_collectionService {
     }
 
 
+    public boolean isUsedName(String s) {
+        MyCollection find
+    }
 }

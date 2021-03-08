@@ -1,3 +1,16 @@
+##要確認
+儲存RTF資料進去varchar2欄位，長度問題(目前先調到對大位元數4000)，  
+假如有問題可考慮更大的欄位。  
+
+ConstraintTarget.IMPLICIT 的使用。
+
+## 進度
+>表單驗證邏輯  
+>> @interface MyDateConstraint 日期驗證註譯  
+>>
+>>>@interface, the keyword to define annotation type  
+>>
+>> 
 # BlogFishLai
 > develop my blog
 ### start from：2021/02/23 

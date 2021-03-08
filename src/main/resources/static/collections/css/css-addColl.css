@@ -1,19 +1,26 @@
+/*
+ * form tag 當作容器
+ */
 #form-add {
     height:100%;
     width:100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    text-align:center;
 }
 
+/*
+ * 所有欄位的容器
+ */
 #fields-container {
     border-width: 1.5px;
-    border-color: hsl(60, 50%, 50%);
+    border-color: hsl(60, 20%, 70%);
     border-style: solid;
     border-radius: 30px;
-    position:relative;
+    margin:auto;
     padding: 50px;
     font-size:1.5rem;
+    width:60%;
+    text-align:start;
 }
 
 #fields-container input {
@@ -23,13 +30,43 @@
 .field {
     margin: 5px;
 }
+
+/*
+ * 作品說明欄位
+ */
 .isTextarea {
     display: flex;
-    align-items: start;
+    flex-direction: column;
+    text-align:center;
+}
+hr {
+    width:100%;
 }
 
+/*
+ * 表單按鈕區塊
+*/
 .form-btnbox {
-    text-align: end;
+    text-align: center;
+}
+.form-btnbox button {
+    border-radius: 5px;
+    background-color: hsl(10, 10%, 80%);
+    font-size:1.5rem;
+    border: 2px solid;
+}
+.btn-submit {
+    color: hsl(90, 50%, 50%);
+}
+.btn-submit:hover {
+    background-color: green;
+}
+.btn-return {
+    color: hsl(0, 50%, 50%);
+}
+.btn-return:hover {
+    background-color: red;
+    color: hsl(0, 50%, 100%);
 }
 
 #name {
@@ -50,5 +87,39 @@ textarea {
 }
 
 .uploadbox {
+    text-align:center;
     height: 300px;
+}
+
+/*
+ * 預覽上載畫面元素img
+*/
+#previewCover {
+    max-height: 100%;
+    max-width:100%;
+    height: auto;
+    width: auto;
+    cursor:pointer;
+}
+#previewCover:hover {
+    opacity: 70%
+}
+
+#addCoverHint {
+    width:90%;
+    height:90%;
+    position:relative;
+    top: -97.5%;
+    left: 5%;
+    background-color: hsl(10, 30%, 90%);
+    opacity: 10%;
+    display: flex;
+    font-size:4rem;
+    cursor:pointer;
+}
+#addCoverHint>span {
+    margin:auto;
+}
+#addCoverHint:hover {
+    opacity: 60%;
 }

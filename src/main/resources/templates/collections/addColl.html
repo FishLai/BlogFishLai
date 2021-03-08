@@ -6,25 +6,28 @@
     <link rel="stylesheet" href="/collections/css/base.css">
     <link rel="stylesheet" href="/collections/css/css-addColl.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/26.0.0/inline/ckeditor.js"></script>
 
     <title>Add a Collection</title>
 </head>
 <body>
-<form th:action="@{/test}" th:object="${myCollection}" method="post" id="form-add">
+<form th:action="@{/mycollection}" th:object="${myCollection}" method="post" id="form-add">
     <div id="fields-container">
         <div id="imgVue" class="field uploadbox">
+            <span v-on="{change:previewCover}" style="display:none;"><input id="f-upload" type="file" accept="image/*"></span>
             <template v-if="!isImgUploaded">
-                <span v-on="{change:loadImg}" style="display:none;"><input id="f-upload" type="file" accept="image/*"></span>
                 <svg v-on="{click:uploadImg}" viewbox="0 0 200 200" width="100%" height="100%" preserveAspectRatio="none" >
-                    <g stroke="hsl(90, 50%, 50%)" stroke-width="3px" fill="none" stroke-dasharray="5, 5">
+                    <g stroke="hsl(15, 20%, 70%)" stroke-width="3px" fill="none" stroke-dasharray="5, 5">
                         <path d="M3 3 L3 197 L197 197 L197 3 Z"/>
                         <path d="M3 3 L197 197"/>
                         <path d="M3 197 L197 3"/>
                     </g>
                 </svg>
+                <div id="addCoverHint" v-on="{click:uploadImg}">
+                    <span>上傳作品封面</span>
+                </div>
             </template>
             <template v-else>
-                loadImage
                 <img id="previewCover" />
             </template>
         </div>
@@ -35,22 +38,24 @@
         </div>
         <div class="field">
             <span>製作開始：</span>
-            <span><input type="Month" min="1900-01" class="f-month"/></span>
+            <span><input id="strStartDate" th:field="*{strStartDate}" type="Month" min="1900-01" class="f-month" name="strStartDate" /></span>
+            <span class="warn" th:if="${#fields.hasErrors('strStartDate')}" th:errors="*{strStartDate}">日期有誤</span>
         </div>
         <div class="field">
             <span>製作結束：</span>
-            <span><input type="Month" min="1900-01" class="f-month"/></span>
+            <span><input th:field="*{strStopDate}" type="Month" min="1900-01" class="f-month"/></span>
         </div>
         <div class="field isTextarea">
-            <span>作品說明：</span>
-            <textarea cols="100" rows="10" maxlength="1000"></textarea>
+            <hr>
+            <div id="rich-editor"></div>
+            <textaera id="ta" th:field="*{collAbs}" style="display:none"></textaera>
         </div>
-        <div class="form-btnbox">
+        <div class="field form-btnbox">
             <span>
-                <button type="submit">提交</button>
+                <button class="btn-submit" type="submit">新增作品</button>
             </span>
             <span>
-                <button type="button">返回</button>
+                <button class="btn-return" type="button">返回</button>
             </span>
         </div>
     </div>
@@ -66,8 +71,17 @@
     for(let i=0; i<f_month.length; i++) {
         f_month[i].setAttribute("max", maxMonth);
     }
+
+    var form = document.getElementById("form-add");
+    form.addEventListener("submit", function(e) {
+        let ta = document.getElementById("ta"); //textarea
+        ta.setAttribute("value", myEditor.getData());
+        return true;
+    }, false);
+
 </script>
 
 <script type="text/javascript" src="../collections/js/vue-addform-img.js"></script>
+<script type="text/javascript" src="../js/ckeditor-collAbs.js"></script>
 </body>
 </html>
