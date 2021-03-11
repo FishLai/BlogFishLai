@@ -4,12 +4,21 @@ import me.fishlab2.blogfishlai.exhibition.entity.Tech;
 import me.fishlab2.blogfishlai.exhibition.entity.MyCollection;
 import me.fishlab2.blogfishlai.exhibition.repository.TechRepository;
 import me.fishlab2.blogfishlai.exhibition.repository.MyCollectionRepository;
+import me.fishlab2.blogfishlai.exhibition.service.impl.MyCollectionServiceImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.validator.HibernateValidator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.SpringConstraintValidatorFactory;
 
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -23,24 +32,31 @@ import java.util.List;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class ExhibitionCRUDTest {
+    Logger logger = LogManager.getLogger(this.getClass());
+
+    @Autowired
+    private MyCollectionServiceImpl myCollectionServiceImpl;
+
     @Autowired
     private MyCollectionRepository myCollectionRepository;
 
     @Autowired
     private TechRepository collTechRepository;
 
+    @Autowired
+    Validator  validator;
+
+
     @Test
     public void add() {
+
+        /*
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         MyCollection myCollection = new MyCollection();
         myCollection.setName("test2");
         myCollection.setCollAbs("it is a test2");
         myCollection.setCoverPath("/");
-        try {
-            myCollection.setStartDate(sdf.parse("2021-02-26"));
-        } catch (ParseException e) {
-            System.err.println("抓到爬去日期意外事件：" + e);
-        }
+
         myCollectionRepository.save(myCollection);
 
         Tech collTech = new Tech();
@@ -58,6 +74,16 @@ public class ExhibitionCRUDTest {
         collTechRepository.save(collTech1);
         collTechRepository.save(collTech2);
         collTechRepository.save(collTech);
+         */
+        MyCollection bean = MyCollection.builder()
+                .name("test save")
+                .strStartDate("1992-02")
+                .strStopDate("1993-02")
+                .collAbs("test repository save")
+                .build();
+
+
+        myCollectionRepository.save(bean);
     }
 
     @Test
@@ -100,6 +126,17 @@ public class ExhibitionCRUDTest {
         MyCollection  myCollection = myCollectionRepository.findById(2);
         myCollection.setCoverPath("collections/img/admin/my_collection/cover_my_collection.JPG");
         myCollectionRepository.save(myCollection);
+    }
+
+    /*
+     * 測試找出欄位 coll_name 所有值
+     */
+    @Test
+    public void findNamesTest() {
+        List<String> names = myCollectionRepository.findNames();
+        for(String name: names) {
+            System.out.println(name);
+        }
     }
 
 }

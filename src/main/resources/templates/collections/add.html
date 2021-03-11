@@ -3,18 +3,20 @@
 <head>
     <meta charset="UTF-8">
 
-    <link rel="stylesheet" href="/collections/css/base.css">
-    <link rel="stylesheet" href="/collections/css/css-addColl.css">
+    <link rel="stylesheet" href="../collections/css/base.css">
+    <link rel="stylesheet" href="../collections/css/css-addColl.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/26.0.0/inline/ckeditor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 
     <title>Add a Collection</title>
 </head>
 <body>
-<form th:action="@{/mycollection}" th:object="${myCollection}" method="post" id="form-add">
+<form th:action="@{/mycollection/add}" th:object="${myCollection}" method="post" id="form-add">
     <div id="fields-container">
         <div id="imgVue" class="field uploadbox">
-            <span v-on="{change:previewCover}" style="display:none;"><input id="f-upload" type="file" accept="image/*"></span>
+            <span style="display:none;"><input v-on="{change:previewCover}" id="f-upload" type="file" accept="image/*"></span>
             <template v-if="!isImgUploaded">
                 <svg v-on="{click:uploadImg}" viewbox="0 0 200 200" width="100%" height="100%" preserveAspectRatio="none" >
                     <g stroke="hsl(15, 20%, 70%)" stroke-width="3px" fill="none" stroke-dasharray="5, 5">
@@ -25,6 +27,9 @@
                 </svg>
                 <div id="addCoverHint" v-on="{click:uploadImg}">
                     <span>上傳作品封面</span>
+                </div>
+                <div class="warn" v-if="uploadfailed">
+                    <sapn style="font-size:3rem; position: relative;">{{ msg }}</sapn>
                 </div>
             </template>
             <template v-else>
@@ -38,21 +43,23 @@
         </div>
         <div class="field">
             <span>製作開始：</span>
-            <span><input id="strStartDate" th:field="*{strStartDate}" type="Month" min="1900-01" class="f-month" name="strStartDate" /></span>
+            <span><input id="strStartDate" th:field="*{strStartDate}" type="Month" min="1900-01" class="f-month" name="strStartDate" required/></span>
             <span class="warn" th:if="${#fields.hasErrors('strStartDate')}" th:errors="*{strStartDate}">日期有誤</span>
         </div>
         <div class="field">
             <span>製作結束：</span>
-            <span><input th:field="*{strStopDate}" type="Month" min="1900-01" class="f-month"/></span>
+            <span><input name="strStopDate" th:field="*{strStopDate}" type="Month" min="1900-01" class="f-month"/></span>
+            <span class="warn" th:if="${#fields.hasErrors('strStopDate')}" th:errors="*{strStopDate}"></span>
         </div>
         <div class="field isTextarea">
             <hr>
             <div id="rich-editor"></div>
-            <textaera id="ta" th:field="*{collAbs}" style="display:none"></textaera>
+            <textarea id="ta" name="collAbs" th:field="*{collAbs}" style="display:none;"></textarea>
+            <span class="warn" th:if="${#fields.hasErrors('collAbs')}" th:errors="*{collAbs}"></span>
         </div>
         <div class="field form-btnbox">
             <span>
-                <button class="btn-submit" type="submit">新增作品</button>
+                <button class="btn-submit" type="button" id="btn-submit">新增作品</button>
             </span>
             <span>
                 <button class="btn-return" type="button">返回</button>
@@ -72,11 +79,18 @@
         f_month[i].setAttribute("max", maxMonth);
     }
 
-    var form = document.getElementById("form-add");
-    form.addEventListener("submit", function(e) {
-        let ta = document.getElementById("ta"); //textarea
-        ta.setAttribute("value", myEditor.getData());
-        return true;
+    //
+    // 先將ckedtior 值傳給 testarea
+    // 再提交
+    //
+    var btnSubmit = document.getElementById("btn-submit");
+    btnSubmit.addEventListener("click", function(e) {
+        let ta = document.getElementById("ta");
+        ta.value = myEditor.getData();
+        console.log(ta.value);
+
+        let form = document.getElementById("form-add");
+        form.submit();
     }, false);
 
 </script>

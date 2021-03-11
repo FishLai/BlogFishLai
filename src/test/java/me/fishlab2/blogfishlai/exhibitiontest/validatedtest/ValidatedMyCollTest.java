@@ -1,6 +1,7 @@
 package me.fishlab2.blogfishlai.exhibitiontest.validatedtest;
 
 import me.fishlab2.blogfishlai.exhibition.entity.MyCollection;
+import me.fishlab2.blogfishlai.exhibition.repository.MyCollectionRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
@@ -21,6 +22,8 @@ public class ValidatedMyCollTest {
     private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Autowired
+    private MyCollectionRepository myCollectionRepository;
+    @Autowired
     private ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
 
     @Autowired
@@ -40,6 +43,19 @@ public class ValidatedMyCollTest {
         Set<ConstraintViolation<MyCollection>> violations = validator.validate(myColl);
 
         for(ConstraintViolation<MyCollection> viol : violations) {
+            logger.error(viol.getMessage());
+        }
+
+    }
+
+    @Test
+    public void validNameTest() {
+        MyCollection myColl =
+                MyCollection.builder()
+                    .name("test2")
+                .build();
+        Set<ConstraintViolation<MyCollection>> viols = validator.validate(myColl);
+        for(ConstraintViolation<MyCollection> viol: viols) {
             logger.error(viol.getMessage());
         }
     }

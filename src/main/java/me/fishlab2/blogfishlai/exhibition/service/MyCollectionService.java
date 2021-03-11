@@ -4,7 +4,8 @@ import me.fishlab2.blogfishlai.exhibition.entity.MyCollection;
 
 import java.util.List;
 
-public interface My_collectionService {
+public interface MyCollectionService {
     public List<MyCollection> getMyCollectionList();
     public MyCollection findMyCollection(long coll_no);
+    public boolean isUsed(String s);
 }

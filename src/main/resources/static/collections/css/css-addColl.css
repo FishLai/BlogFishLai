@@ -89,6 +89,12 @@ textarea {
 .uploadbox {
     text-align:center;
     height: 300px;
+    position: relative;
+}
+.uploadbox > svg {
+    position: absolute;
+    top: 0;
+    left:0;
 }
 
 /*
@@ -108,8 +114,8 @@ textarea {
 #addCoverHint {
     width:90%;
     height:90%;
-    position:relative;
-    top: -97.5%;
+    position:absolute;
+    top: 5%;
     left: 5%;
     background-color: hsl(10, 30%, 90%);
     opacity: 10%;
@@ -122,4 +128,12 @@ textarea {
 }
 #addCoverHint:hover {
     opacity: 60%;
+}
+
+/*
+ * 警告相關的樣式
+ */
+.warn {
+    color: hsl(0, 50%, 50%);
+    font-size: 1.4rem;
 }

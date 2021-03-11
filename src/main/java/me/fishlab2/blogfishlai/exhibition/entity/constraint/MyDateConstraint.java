@@ -45,7 +45,7 @@ public @interface MyDateConstraint {
             /*
              * check field is null
              */
-            if(s == null) return true;
+            if(s == "") return true;
 
             String target = new String(s);
             Pattern pat = Pattern.compile("(?<year>\\d{4})-(?<month>\\d{2})");
@@ -57,7 +57,7 @@ public @interface MyDateConstraint {
                 int month = Integer.parseInt(mat.group("month")); //轉換月份字串到整數
 
                 LocalDate today = LocalDate.now(); //使用今天作為日期最大值
-                if(year <= today.getYear() && year >= 1999) isYear=true; //年份邏輯正確
+                if(year <= today.getYear() && year >= 1900) isYear=true; //年份邏輯正確
                 if(year == today.getYear()) maxMonth = today.getMonthValue(); //作品年份為今年，則最大月份為當月
                 if(month <= maxMonth && month > 0) isMonth=true; //月份邏輯正確
 
@@ -95,7 +95,7 @@ public @interface MyDateConstraint {
         @Override
         public boolean isValid(MyCollection myCollection, ConstraintValidatorContext constraintValidatorContext) {
             String strStart = myCollection.getStrStartDate(), strStop = myCollection.getStrStopDate();
-            if( strStart == null || strStop == null) return true; //其中一個日期沒有就不較驗
+            if( strStart == "" || strStop == "") return true; //其中一個日期沒有就不較驗
             SimpleDateFormat sDF = new SimpleDateFormat("yyyy-MM");
             try {
                 Date startDate = sDF.parse(strStart);
@@ -109,7 +109,7 @@ public @interface MyDateConstraint {
             constraintValidatorContext.buildConstraintViolationWithTemplate(
                     "{me.fishlab2.blogfishlai.exhibition.entity.constraint.MyDateConstraint.message}" +
                             "停止日期不能在開始日期之前"
-            ).addConstraintViolation();
+            ).addPropertyNode("strStartDate").addConstraintViolation();
             return false;
         }
     }

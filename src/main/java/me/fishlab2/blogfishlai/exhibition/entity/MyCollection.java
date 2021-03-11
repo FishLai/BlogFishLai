@@ -8,6 +8,8 @@ import org.hibernate.validator.constraints.UniqueElements;
 import javax.persistence.*;
 import javax.validation.ConstraintTarget;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.lang.annotation.Repeatable;
 import java.util.Date;
 import java.util.List;
@@ -40,8 +42,10 @@ public class MyCollection {
     @Column(name="stop_date", nullable=true)
     private Date stopDate;
 
-    @NotBlank(message="請稍作說明")
-    @Column(name="coll_abstract", nullable=true, columnDefinition="varchar2(4000)")
+    @NotBlank(message="拜託跟我說說此作品")
+    @NotEmpty(message="拜託跟我說說此作品")
+    @NotNull(message="拜託跟我說說此作品")
+    @Column(name="coll_abstract", nullable=false, columnDefinition="varchar2(4000)")
     private String collAbs;
 
     @Column(name="cover_path", columnDefinition="varchar(150)")
@@ -52,6 +56,7 @@ public class MyCollection {
     private List<Tech> techList;
 
     @Transient
+    @NotEmpty(message="是什麼時候開始的呢？")
     @MyDateConstraint
     private String strStartDate;
 

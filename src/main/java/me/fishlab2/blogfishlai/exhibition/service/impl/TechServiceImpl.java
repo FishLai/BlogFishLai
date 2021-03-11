@@ -5,9 +5,11 @@ import me.fishlab2.blogfishlai.exhibition.entity.Tech;
 import me.fishlab2.blogfishlai.exhibition.repository.TechRepository;
 import me.fishlab2.blogfishlai.exhibition.service.TechService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class TechServiceImpl implements TechService {
 
     @Autowired
