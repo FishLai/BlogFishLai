@@ -1,19 +1,29 @@
 package me.fishlab2.blogfishlai.exhibition.entity.constraint;
 
+import me.fishlab2.blogfishlai.exhibition.entity.MyCollection;
 import me.fishlab2.blogfishlai.exhibition.repository.MyCollectionRepository;
-import me.fishlab2.blogfishlai.exhibition.service.impl.MyCollectionServiceImpl;
-import org.hibernate.validator.HibernateValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.type.StringType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.beanvalidation.SpringConstraintValidatorFactory;
 
-import javax.validation.*;
+import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.validation.Constraint;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import javax.validation.Payload;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.List;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
@@ -24,18 +34,24 @@ public @interface Unique {
     Class<? extends Payload>[] payload() default {};
 
     class UniqueValidator implements ConstraintValidator<Unique, String> {
+        private Logger logger = LogManager.getLogger(this.getClass());
 
-        @Autowired
-        private MyCollectionServiceImpl myCollectionServiceImpl;
+        private EntityManagerFactory emFactory = Persistence.createEntityManagerFactory(
+                "me.fishlab2.blogfishlai.mycollection_catalog");
+        private EntityManager em = emFactory.createEntityManager();
 
         @Override
         public void initialize(Unique constraintAnnotation) {
-
         }
 
         @Override
         public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-            boolean isUnique = !(myCollectionServiceImpl.isUsed(s));
+            if(s == null) return false;
+
+            /*
+             * 被使用過則回傳未通過較驗訊息
+             */
+            boolean isUnique = !isUsed(s);
             if(!isUnique) {
                 constraintValidatorContext.disableDefaultConstraintViolation();
                 constraintValidatorContext.buildConstraintViolationWithTemplate(
@@ -44,6 +60,34 @@ public @interface Unique {
                 ).addConstraintViolation();
             }
             return isUnique;
+        }
+
+        /*
+         * 回傳名稱是否被用過
+         */
+        private boolean isUsed(String s) {
+            String collName = s.replaceAll("[\\h\\s\\v\\p{Punct}]", "");
+            Session session = this.em.unwrap(Session.class);
+
+            DetachedCriteria criteria = DetachedCriteria
+                    .forClass(MyCollection.class)
+                    .setProjection(Projections.rowCount())
+                    .add(Restrictions.sqlRestriction(
+                            "REGEXP_REPLACE({alias}.coll_name, '[[:space:][:punct:]]', '') = (?)",
+                            collName,
+                            StringType.INSTANCE));
+            Number count = (Number) criteria.getExecutableCriteria(session)
+                    .list()
+                    .iterator()
+                    .next();
+
+            //em.close();
+
+
+            //Todo 待釐清無法再同一 session 驗證+儲存會丟出null id...，
+            // 以解決，使用 repo 搜尋資料庫是否有重複名稱
+
+            return count.intValue() > 0;
         }
     }
 }

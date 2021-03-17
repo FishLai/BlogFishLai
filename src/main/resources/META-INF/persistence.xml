@@ -1,0 +1,20 @@
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+    <persistence-unit name="me.fishlab2.blogfishlai.mycollection_catalog">
+        <description>Hibernate EntityManager Demo</description>
+        <class>me.fishlab2.blogfishlai.exhibition.entity.MyCollection</class>
+        <class>me.fishlab2.blogfishlai.exhibition.entity.Tech</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@localhost:1521/xepdb1"/>
+            <property name="javax.persistence.jdbc.user" value="scott"/>
+            <property name="javax.persistence.jdbc.password" value="tiger"/>
+        </properties>
+    </persistence-unit>
+</persistence>

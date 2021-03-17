@@ -3,6 +3,7 @@ package me.fishlab2.blogfishlai.exhibition.controller;
 import me.fishlab2.blogfishlai.exhibition.entity.MyCollection;
 import me.fishlab2.blogfishlai.exhibition.repository.MyCollectionRepository;
 import me.fishlab2.blogfishlai.exhibition.service.impl.FileSystemStorageServiceImpl;
+import me.fishlab2.blogfishlai.exhibition.service.impl.MyCollectionServiceImpl;
 import net.sf.json.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,12 +14,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,6 +32,9 @@ public class ExhibitController {
 
     @Autowired
     private MyCollectionRepository myCollRepository;
+
+    @Autowired
+    private MyCollectionServiceImpl mCServ;
 
     @Autowired
     private FileSystemStorageServiceImpl storageServiceImpl;
@@ -53,12 +59,19 @@ public class ExhibitController {
     }
 
     @PostMapping("/add")
-    public String saveCollection(@Valid MyCollection mC, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) return "collections/add";
+    public String saveCollection(@RequestParam("strStartDate") String startDate,
+                                 @RequestParam("strStopDate") String stopDate,
+                                 @Valid MyCollection mC,
+                                 BindingResult bindingResult) {
         if(storageServiceImpl.getDistinationFile() != null) {
             mC.setCoverPath(storageServiceImpl.persistFile(mC.getName()));
         }
+        @Valid
+        HashMap<String, Date> dates = mCServ.doTransformDate(startDate, stopDate);
+        mC.setStartDate(dates.get("startDate"));
+        mC.setStopDate(dates.get("stopDate"));
 
+        if(bindingResult.hasErrors()) return "collections/add";
         myCollRepository.save(mC);
         return "redirect:/mycollection";
     }

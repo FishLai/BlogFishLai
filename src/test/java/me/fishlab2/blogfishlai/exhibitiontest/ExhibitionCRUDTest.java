@@ -1,26 +1,26 @@
 package me.fishlab2.blogfishlai.exhibitiontest;
 
-import me.fishlab2.blogfishlai.exhibition.entity.Tech;
 import me.fishlab2.blogfishlai.exhibition.entity.MyCollection;
-import me.fishlab2.blogfishlai.exhibition.repository.TechRepository;
+import me.fishlab2.blogfishlai.exhibition.entity.Tech;
 import me.fishlab2.blogfishlai.exhibition.repository.MyCollectionRepository;
+import me.fishlab2.blogfishlai.exhibition.repository.TechRepository;
 import me.fishlab2.blogfishlai.exhibition.service.impl.MyCollectionServiceImpl;
+import me.fishlab2.blogfishlai.javaconfig.MethodValidationConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.validator.HibernateValidator;
 import org.junit.Test;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Validate;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.validation.Validator;
-import org.springframework.validation.beanvalidation.SpringConstraintValidatorFactory;
+import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Validation;
-import javax.validation.ValidatorFactory;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import javax.annotation.Resource;
+import javax.validation.Valid;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -35,7 +35,13 @@ public class ExhibitionCRUDTest {
     Logger logger = LogManager.getLogger(this.getClass());
 
     @Autowired
-    private MyCollectionServiceImpl myCollectionServiceImpl;
+    private MyCollectionServiceImpl myCollectionService;
+
+    /*public ExhibitionCRUDTest() {};
+    @Autowired
+    public ExhibitionCRUDTest(MyCollectionServiceImpl mCSI) {
+        this.myCollectionService = mCSI;
+    }*/
 
     @Autowired
     private MyCollectionRepository myCollectionRepository;
@@ -43,22 +49,10 @@ public class ExhibitionCRUDTest {
     @Autowired
     private TechRepository collTechRepository;
 
-    @Autowired
-    Validator  validator;
-
 
     @Test
-    public void add() {
-
+    public void insertTest() {
         /*
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        MyCollection myCollection = new MyCollection();
-        myCollection.setName("test2");
-        myCollection.setCollAbs("it is a test2");
-        myCollection.setCoverPath("/");
-
-        myCollectionRepository.save(myCollection);
-
         Tech collTech = new Tech();
         collTech.setName("HTML");
         collTech.setColl(myCollection);
@@ -75,27 +69,39 @@ public class ExhibitionCRUDTest {
         collTechRepository.save(collTech2);
         collTechRepository.save(collTech);
          */
-        MyCollection bean = MyCollection.builder()
+        /*
+        MyCollection collEntity = MyCollection.builder()
                 .name("test save")
-                .strStartDate("1992-02")
-                .strStopDate("1993-02")
                 .collAbs("test repository save")
+                .coverPath(null)
                 .build();
 
+        collEntity.setStartAndStopDates("1994-05", "1994-05");
 
-        myCollectionRepository.save(bean);
+        Assert.assertNotNull(collEntity);
+
+         */
+        MyCollection collEntity = new MyCollection();
+
+        //Todo costom unique validator cannot use
+        // cross-parameters validator 怎麼自動執行時驗證
+        collEntity.setName("test 261!@ # $");
+        collEntity.setCollAbs("test insert wrong dates");
+
+        myCollectionService.doSetStartAndStopDates("2000-02", "2000-05", collEntity);
+
+        //collEntity.setStartAndStopDates("3000-02", "1000-05");
+
+
+        myCollectionRepository.save(collEntity);
     }
 
     @Test
-    public void find() {
+    public void findAllTest() {
         MyCollection coll;
-        coll = myCollectionRepository.findById(1);
-        System.out.println(coll);
-        List<Tech> list = coll.getTechList();
-        System.out.println(coll.getName());
-        System.out.println(list.size());
-        for (Tech tech: list) {
-            System.out.println(tech.getName());
+        Iterator<MyCollection> colls = myCollectionRepository.findAll().iterator();
+        while(colls.hasNext()) {
+            logger.info(colls.next().toString());
         }
     }
 

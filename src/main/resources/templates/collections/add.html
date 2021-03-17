@@ -43,13 +43,13 @@
         </div>
         <div class="field">
             <span>製作開始：</span>
-            <span><input id="strStartDate" th:field="*{strStartDate}" type="Month" min="1900-01" class="f-month" name="strStartDate" required/></span>
-            <span class="warn" th:if="${#fields.hasErrors('strStartDate')}" th:errors="*{strStartDate}">日期有誤</span>
+            <span><input id="strStartDate" type="Month" min="1900-01" class="f-month" name="strStartDate" required/></span>
+            <span class="warn" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}">日期有誤</span>
         </div>
         <div class="field">
             <span>製作結束：</span>
-            <span><input name="strStopDate" th:field="*{strStopDate}" type="Month" min="1900-01" class="f-month"/></span>
-            <span class="warn" th:if="${#fields.hasErrors('strStopDate')}" th:errors="*{strStopDate}"></span>
+            <span><input name="strStopDate" type="Month" min="1900-01" class="f-month"/></span>
+            <span class="warn" th:if="${#fields.hasErrors('stopDate')}" th:errors="*{stopDate}"></span>
         </div>
         <div class="field isTextarea">
             <hr>
