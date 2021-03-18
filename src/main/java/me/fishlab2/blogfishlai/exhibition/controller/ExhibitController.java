@@ -14,16 +14,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 @Controller
 @RequestMapping("mycollection")
@@ -52,7 +52,7 @@ public class ExhibitController {
 
     @RequestMapping("/add")
     public ModelAndView addColl() {
-        ModelAndView mav = new ModelAndView("collections/add");
+        ModelAndView mav = new ModelAndView("collections/edit");
         mav.addObject("myCollection", new MyCollection());
 
         return mav;
@@ -61,18 +61,29 @@ public class ExhibitController {
     @PostMapping("/add")
     public String saveCollection(@RequestParam("strStartDate") String startDate,
                                  @RequestParam("strStopDate") String stopDate,
-                                 @Valid MyCollection mC,
+                                 @Valid MyCollection myCollection,
                                  BindingResult bindingResult) {
-        if(storageServiceImpl.getDistinationFile() != null) {
-            mC.setCoverPath(storageServiceImpl.persistFile(mC.getName()));
-        }
-        @Valid
-        HashMap<String, Date> dates = mCServ.doTransformDate(startDate, stopDate);
-        mC.setStartDate(dates.get("startDate"));
-        mC.setStopDate(dates.get("stopDate"));
 
-        if(bindingResult.hasErrors()) return "collections/add";
-        myCollRepository.save(mC);
+        /*
+         * 用 global exception handler handle ConstraintViolationException
+         */
+        //Todo 重寫日期較驗方式，
+        // 在 controller 用parameter @Pattern、@NotEmpty 較驗日期輸入格式
+        // 在 DTO 重寫日期setter 後，用class-level validator 較驗時間邏輯
+        HashMap<String, Date> dates = mCServ.doTransformDate(startDate, stopDate);
+        myCollection.setStartDate(dates.get("startDate"));
+        myCollection.setStopDate(dates.get("stopDate"));
+
+        if(bindingResult.hasErrors()) return "collections/edit";
+
+        /*
+         * get path record and save to persist directory
+         */
+        if(storageServiceImpl.getDistinationFile() != null) {
+            myCollection.setCoverPath(storageServiceImpl.persistFile(myCollection.getName()));
+        }
+
+        myCollRepository.save(myCollection);
         return "redirect:/mycollection";
     }
 

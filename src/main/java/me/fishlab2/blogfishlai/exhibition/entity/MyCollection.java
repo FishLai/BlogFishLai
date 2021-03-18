@@ -57,23 +57,10 @@ public class MyCollection {
     @OneToMany(cascade=CascadeType.ALL, mappedBy="coll")
     @ToString.Exclude
     private List<Tech> techList;
-/*
-    //
-    // Todo 透過重寫lombok 設定日期函數
-    //  並且取代原有的 validator 使用參數執行較驗
-    @Transient
-    @NotEmpty(message="是什麼時候開始的呢？")
-    @MyDateConstraint
-    private String strStartDate;
 
-    @Transient
-    @MyDateConstraint
-    private String strStopDate;
- */
-
-    //@MyDateConstraint(validationAppliesTo=ConstraintTarget.PARAMETERS)
     //Todo remove method 通過較驗後可以直接轉為Date格式，直接set就好了
-    public void setStartAndStopDates(String strStartDate, String strStopDate) {
+    @MyDateConstraint(validationAppliesTo=ConstraintTarget.PARAMETERS)
+    public int setStartAndStopDates(String strStartDate, String strStopDate) {
         SimpleDateFormat sDF = new SimpleDateFormat("yyyy-MM");
         Pattern pat = Pattern.compile("\\d{4}-\\d{2}");
         Matcher matStart = pat.matcher(strStartDate);
@@ -88,6 +75,20 @@ public class MyCollection {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
+        return 0;
     }
+
+/*
+    //
+    // Todo 透過重寫lombok 設定日期函數
+    //  並且取代原有的 validator 使用參數執行較驗
+    @Transient
+    @NotEmpty(message="是什麼時候開始的呢？")
+    @MyDateConstraint
+    private String strStartDate;
+
+    @Transient
+    @MyDateConstraint
+    private String strStopDate;
+ */
 }
