@@ -52,48 +52,6 @@ public class ExhibitionCRUDTest {
 
     @Test
     public void insertTest() {
-        /*
-        Tech collTech = new Tech();
-        collTech.setName("HTML");
-        collTech.setColl(myCollection);
-
-        Tech collTech1 = new Tech();
-        collTech1.setColl(myCollection);
-        collTech1.setName("Java");
-
-        Tech collTech2 = new Tech();
-        collTech2.setColl(myCollection);
-        collTech2.setName("CSS");
-
-        collTechRepository.save(collTech1);
-        collTechRepository.save(collTech2);
-        collTechRepository.save(collTech);
-         */
-        /*
-        MyCollection collEntity = MyCollection.builder()
-                .name("test save")
-                .collAbs("test repository save")
-                .coverPath(null)
-                .build();
-
-        collEntity.setStartAndStopDates("1994-05", "1994-05");
-
-        Assert.assertNotNull(collEntity);
-
-         */
-        MyCollection collEntity = new MyCollection();
-
-        //Todo costom unique validator cannot use
-        // cross-parameters validator 怎麼自動執行時驗證
-        collEntity.setName("test 261!@ # $");
-        collEntity.setCollAbs("test insert wrong dates");
-
-        myCollectionService.doSetStartAndStopDates("2000-02", "2000-05", collEntity);
-
-        //collEntity.setStartAndStopDates("3000-02", "1000-05");
-
-
-        myCollectionRepository.save(collEntity);
     }
 
     @Test

@@ -24,8 +24,7 @@
         <section id="coll-container" class="">
             <div class="counter" th:each="item:${collList.content}">
                 <div class="cover" th:if="${item.coverPath}!=null">
-                    <span th:text="${item.coverPath}"></span>
-                    <img src="collections/img/admin/my_collection/cover_my_collection.png" alt="still findiing" />
+                    <img th:src="${item.coverPath}" alt="still findiing" />
                 </div>
                 <div class="counter-description">
                     <h1 th:text="${item.name}"></h1>

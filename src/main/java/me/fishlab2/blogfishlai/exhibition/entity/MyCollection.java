@@ -3,6 +3,8 @@ package me.fishlab2.blogfishlai.exhibition.entity;
 import lombok.*;
 import me.fishlab2.blogfishlai.exhibition.entity.constraint.MyDateConstraint;
 import me.fishlab2.blogfishlai.exhibition.entity.constraint.Unique;
+import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
@@ -36,11 +38,13 @@ public class MyCollection {
     @Unique
     private String name;
 
+    @DateTimeFormat(pattern = "yyyy-MM")
     @Temporal(TemporalType.DATE)
     @Column(name="start_date", nullable=false)
     private Date startDate;
     //@OneToMay(cascade = CascadeType.ALL)
 
+    @DateTimeFormat(pattern = "yyyy-MM")
     @Temporal(TemporalType.DATE)
     @Column(name="stop_date", nullable=true)
     private Date stopDate;
@@ -54,11 +58,13 @@ public class MyCollection {
     @Column(name="cover_path", columnDefinition="varchar(150)")
     private String coverPath;
 
+    @UniqueElements(message="出現重複技術名稱")
     @OneToMany(cascade=CascadeType.ALL, mappedBy="coll")
     @ToString.Exclude
     private List<Tech> techList;
 
-    //Todo remove method 通過較驗後可以直接轉為Date格式，直接set就好了
+    //Todo should modify 目前只拿來做參數較驗，日期參數是否正確
+    // 執行儲存時不會驗證日期，利用後臺儲存會有人為錯誤
     @MyDateConstraint(validationAppliesTo=ConstraintTarget.PARAMETERS)
     public int setStartAndStopDates(String strStartDate, String strStopDate) {
         SimpleDateFormat sDF = new SimpleDateFormat("yyyy-MM");
@@ -77,18 +83,4 @@ public class MyCollection {
         }
         return 0;
     }
-
-/*
-    //
-    // Todo 透過重寫lombok 設定日期函數
-    //  並且取代原有的 validator 使用參數執行較驗
-    @Transient
-    @NotEmpty(message="是什麼時候開始的呢？")
-    @MyDateConstraint
-    private String strStartDate;
-
-    @Transient
-    @MyDateConstraint
-    private String strStopDate;
- */
 }

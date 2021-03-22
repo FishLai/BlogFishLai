@@ -105,7 +105,6 @@ textarea {
     max-width:100%;
     height: auto;
     width: auto;
-    cursor:pointer;
 }
 #previewCover:hover {
     opacity: 70%
@@ -121,7 +120,6 @@ textarea {
     opacity: 10%;
     display: flex;
     font-size:4rem;
-    cursor:pointer;
 }
 #addCoverHint>span {
     margin:auto;
@@ -136,4 +134,36 @@ textarea {
 .warn {
     color: hsl(0, 50%, 50%);
     font-size: 1.4rem;
+}
+
+/*
+ * 按鈕樣式 - 按鈕基本樣式
+ */
+.btn-add {
+    cursor: pointer;
+}
+
+/*
+ * 按鈕樣式 - 增加使用技巧標籤
+ */
+.btn-add-label {
+    border: 0.5px solid hsl(0, 20%, 70%);
+    border-radius: 6px;
+    background-color: hsl(210, 80%, 60%);
+    color: hsl(0, 20%, 85%);
+}
+.btn-add-label:hover {
+    opacity: 70%;
+}
+.btn-add-label:focus {
+    border: 0.5px solid hsl(0, 50%, 80%);
+    outline: 1px;
+}
+
+/*
+ * 標籤樣式 - 技巧標籤
+ * Todo 標籤樣式還沒完成
+ */
+.label-tech {
+
 }

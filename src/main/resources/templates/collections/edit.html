@@ -25,7 +25,7 @@
                         <path d="M3 197 L197 3"/>
                     </g>
                 </svg>
-                <div id="addCoverHint" v-on="{click:uploadImg}">
+                <div id="addCoverHint" v-on="{click:uploadImg}" class="btn-add">
                     <span>上傳作品封面</span>
                 </div>
                 <div class="warn" v-if="uploadfailed">
@@ -33,36 +33,60 @@
                 </div>
             </template>
             <template v-else>
-                <img id="previewCover" />
+                <img id="previewCover" th:src="${imgTmp}" class="btn-add"/>
             </template>
+            <input type="hidden" name="imgTmp" th:value="${imgTmp}">
         </div>
         <div class="field coll-name">
             <span>作品名稱：</span>
-            <span><input id="name" type="text" th:field="*{name}" maxlength="40" placeholder="輸入作品名稱" autofocus required/></span>
+            <span><input th:value="*{name}" id="name" type="text" th:field="*{name}" maxlength="40" placeholder="輸入作品名稱" autofocus required/></span>
             <span class="warn" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">名稱不合法</span>
         </div>
         <div class="field">
             <span>製作開始：</span>
-            <span><input id="strStartDate" type="Month" min="1900-01" class="f-month" name="strStartDate" required/></span>
+            <span>
+                <input type="Month" min="1900-01" class="f-month" name="strStartDate"
+                         th:value="*{startDate} != null ? *{startDate} : ${{startDate}}" required/>
+            </span>
+
             <span class="warn" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}">日期有誤</span>
         </div>
         <div class="field">
             <span>製作結束：</span>
-            <span><input name="strStopDate" type="Month" min="1900-01" class="f-month"/></span>
+            <span><input name="strStopDate" type="Month" min="1900-01" class="f-month"
+                         th:value="*{stopDate} != null ? *{stopDate} : ${{stopDate}}"/></span>
             <span class="warn" th:if="${#fields.hasErrors('stopDate')}" th:errors="*{stopDate}"></span>
         </div>
         <div class="field isTextarea">
             <hr>
             <div id="rich-editor"></div>
-            <textarea id="ta" name="collAbs" th:field="*{collAbs}" style="display:none;"></textarea>
+            <textarea th:value="*{collAbs}" id="ta" name="collAbs" th:field="*{collAbs}" style="display:none;"></textarea>
             <span class="warn" th:if="${#fields.hasErrors('collAbs')}" th:errors="*{collAbs}"></span>
+            <hr>
+        </div>
+        <div class="teches" id="TechLabelVue">
+            <span style="font-size:14px;">Sill Labels : </span>
+            <tech-label th:each="tech, iter : ${myCollection.techList}"
+                th:componentid="'tech' + ${iter.index}" th:techname="${tech.getName()}"
+                        v-on="{callOutRemoveLabel:removeLabelData}"
+            ></tech-label>
+<!--            <template v-for="tech in labels">-->
+<!--                <tech-label :component-id="tech.id" :tech-name="tech.name"></tech-label>-->
+<!--            </template>-->
+            <tech-label v-for="tech in labels"
+                        :componentid="tech.id"
+                        :techname="tech.name"
+                        v-on="{callOutRemoveLabel:removeLabelData}"
+            ></tech-label>
+
+            <span><button type="button" v-on="{click:appendLabel}" class="btn-add btn-add-label">+ Skill</button></span>
         </div>
         <div class="field form-btnbox">
             <span>
                 <button class="btn-submit" type="button" id="btn-submit">新增作品</button>
             </span>
             <span>
-                <button class="btn-return" type="button">返回</button>
+                <button class="btn-return" th:onclick="javascript:window.location='../mycollection'" type="button">返回</button>
             </span>
         </div>
     </div>
@@ -84,18 +108,47 @@
     // 再提交
     //
     var btnSubmit = document.getElementById("btn-submit");
-    btnSubmit.addEventListener("click", function(e) {
+    btnSubmit.addEventListener("click", function(e, callback) {
+        //
+        // 傳入 ckeditor 內文
+        //
         let ta = document.getElementById("ta");
         ta.value = myEditor.getData();
-        console.log(ta.value);
-
         let form = document.getElementById("form-add");
         form.submit();
+
+        //
+        // 傳入 Base64 編碼圖檔資料，供重導載入
+        // 沒有更好的辦法處理js 沒執行，又不想逐個訊息插入
+        //let data = new FormData(form);
+        //let imgTemp = document.getElementById("previewCover");
+        //data.append("image", imgTemp != null ? imgTemp.src : "");
+        //let req = new XMLHttpRequest();
+        //console.log(data.get("name"));
+        //req.open("POST", form.action, true);
+        //req.setRequestHeader("Cache-Control", "max-age=0");
+        //req.setRequestHeader("Sec-Fetch-Dest", "document");
+        //req.setRequestHeader("Sec-Fetch-Mode", "navigate");
+        //req.setRequestHeader("Content-Type", "*/*");
+        //req.responseType = "document";
+        //req.send(data);
+        //req.onreadystatechange = function() {
+        //    if ( this.readyState === this.DONE ) {
+        //        console.log(this);
+                //document.write(this.responseText);
+                //window.location = req.responseText;
+                //document.querySelector("html").innerHTML = this.responseText;
+        //        document.body = this.response.body;
+        //    }
+        //};
     }, false);
+
+
 
 </script>
 
 <script type="text/javascript" src="../collections/js/vue-addform-img.js"></script>
 <script type="text/javascript" src="../js/ckeditor-collAbs.js"></script>
+<script type="text/javascript" src="../collections/js/vue-techlabel.js"></script>
 </body>
 </html>

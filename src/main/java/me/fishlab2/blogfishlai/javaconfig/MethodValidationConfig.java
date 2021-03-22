@@ -19,7 +19,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Map;
 
-@Configuration
+//@Configuration
 public class MethodValidationConfig {
     //Todo clean if no used
     //@Autowired implements HibernatePropertiesCustomizer

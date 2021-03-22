@@ -18,6 +18,7 @@ public class MyBlogApplication {
 	}
 //Todo clean
 /*
+ * 設定 hibernate session 提供建立與資料庫的連線
 	@Bean
 	public SessionFactory sessionFactory(EntityManagerFactory emf) {
 		if (emf.unwrap(SessionFactory.class) == null) {
@@ -27,5 +28,4 @@ public class MyBlogApplication {
 	}
 
  */
-
 }

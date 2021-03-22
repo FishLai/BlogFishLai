@@ -21,8 +21,6 @@ public interface MyCollectionRepository extends JpaRepository<MyCollection, Long
     @Query(value="SELECT mc.coll_name FROM my_collection mc", nativeQuery=true)
     List<String> findNames();
 
-    // Todo 等待測試，
-    //  sql with replace name，
     @Query(value="SELECT COUNT(*) FROM my_collection mc WHERE REGEXP_REPLACE(mc.coll_name, '[[:space:][:punct:]]') = ?1", nativeQuery=true)
     long countByUniqueName(String collName);
 }

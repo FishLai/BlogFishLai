@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.fishlab2.blogfishlai.exhibition.controller.ExhibitController;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,12 +12,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.Set;
 
-@ControllerAdvice(assignableTypes={ExhibitController.class})
+//@ControllerAdvice
 public class ExhibitExceptionHandler {
+
+
 
     //@ResponseBody
     //@ResponseStatus(HttpStatus.OK)
-    @ExceptionHandler({ConstraintViolationException.class})
+    //@ExceptionHandler({ConstraintViolationException.class})
     public ModelAndView handleConstraintValidationExceptionHandler(ConstraintViolationException e, WebRequest req){
         Set<ConstraintViolation<?>> viols = e.getConstraintViolations();
         String msg = viols.iterator().next().getMessage();

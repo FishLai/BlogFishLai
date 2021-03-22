@@ -24,7 +24,8 @@ img {
 
 section.container {
     display: flex;
-    height: 75%;
+    min-height: 75%;
+    height: auto;
     background-color: hsl(0, 30%, 95%);
 }
 

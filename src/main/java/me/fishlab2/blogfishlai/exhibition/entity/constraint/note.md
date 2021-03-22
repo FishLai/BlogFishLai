@@ -39,3 +39,10 @@
 >> ### regex note 
 >> regex 用 Matcher.matches() 判斷是否完全符合字串  
 >> 而 .find() 會一次找出還能匹配的字串
+> 
+
+# P.S.
+> ## addPropertyNode(string)  
+> 是與實體 POJO 連結屬性連結，  
+> 想要新增 node 不知道是不是可以透過
+> addContainerElementNode()

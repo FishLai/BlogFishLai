@@ -1,5 +1,6 @@
 package me.fishlab2.blogfishlai.exhibition.entity.constraint;
 
+import me.fishlab2.blogfishlai.exhibition.entity.MyCollection;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -14,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -147,8 +149,6 @@ public @interface MyDateConstraint {
                 e.printStackTrace();
             }
 
-
-            //Todo 確認一下addPropertyNode()
             overrideErrorMsg("停止日期不能早於開始日期", "startDate", constraintValidatorContext);
             return false;
         }

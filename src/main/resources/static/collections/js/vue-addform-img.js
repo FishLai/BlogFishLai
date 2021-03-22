@@ -5,6 +5,13 @@ var imgUploadVue = new Vue({
         uploadfailed: false,
         msg: ''
     },
+    mounted: function() {
+        let base64Img = document.querySelector("input[name=imgTmp]").value;
+        if(base64Img != "") {
+            this.isImgUploaded = true;
+            this.uploadfailed = false;
+        }
+    },
     methods: {
         uploadImg: function(e) {
             let field = document.getElementById("f-upload");
@@ -29,6 +36,7 @@ var imgUploadVue = new Vue({
                             reader.addEventListener('load', function(e){
                                 let img = document.getElementById("previewCover");
                                 img.setAttribute("src", e.target.result);
+                                document.querySelector("input[name=imgTmp]").value = e.target.result;
                                 img.addEventListener("click", imgUploadVue.uploadImg, {capture:false});
                             }, false);
 
@@ -36,6 +44,7 @@ var imgUploadVue = new Vue({
                             // 讀取檔案
                             reader.readAsDataURL(e.target.files[0]);
                         } else {
+                            document.querySelector("input[name=imgTmp").value = "";
                         	imgUploadVue.isImgUploaded = false;
                         	imgUploadVue.uploadfailed = true;
                         }

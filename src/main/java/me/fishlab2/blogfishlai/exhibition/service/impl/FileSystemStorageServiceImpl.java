@@ -8,6 +8,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -121,10 +122,13 @@ public class FileSystemStorageServiceImpl implements StorageService {
          */
         String fn = name.replaceAll("[\\W_]", "_");
 
-        Path fnPath = this.distinationPath.resolve(fn);
+        Path fnPath = this.rootLoc.resolve(fn);
         init(fnPath); //try create folder
 
         try {
+            /*
+             * distinationFile 會是tmp 圖檔路徑
+             */
             Files.move(this.distinationFile,
                     fnPath.resolve(this.distinationFile.getFileName()).toAbsolutePath(),
                     StandardCopyOption.REPLACE_EXISTING);
@@ -132,7 +136,7 @@ public class FileSystemStorageServiceImpl implements StorageService {
             /*
              * 返回相對路徑給資料庫儲存
              */
-            return (fn + "/" + this.distinationFile.getFileName());
+            return ("files/" + fn + "/" + this.distinationFile.getFileName());
         } catch (IOException e) {
             e.printStackTrace();
         }

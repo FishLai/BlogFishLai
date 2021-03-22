@@ -23,4 +23,7 @@ public class Tech {
     //@JoinColumn(name="coll_no", referencedColumnName="coll_no")
     //private long collNo;
 
+    /*
+     * Todo 可以寫進去 MyCollection.java 內，感覺結構比較清楚
+     */
 }

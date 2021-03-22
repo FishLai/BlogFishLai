@@ -14,5 +14,6 @@ InlineEditor.create(document.getElementById("rich-editor"), {
     })
     .then(editor => {
         myEditor = editor;
-        console.log("hi inline editor")
+        editor.setData(document.getElementById("ta").value);
+        console.log("hi inline editor");
     });

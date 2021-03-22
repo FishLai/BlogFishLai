@@ -85,7 +85,7 @@ public @interface Unique {
 
 
             //Todo 待釐清無法再同一 session 驗證+儲存會丟出null id...，
-            // 以解決，使用 repo 搜尋資料庫是否有重複名稱
+            // 估計是transaction 觀念問題
 
             return count.intValue() > 0;
         }
