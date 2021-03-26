@@ -1,6 +1,8 @@
 package me.fishlab2.blogfishlai.exhibition.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import me.fishlab2.blogfishlai.exhibition.entity.compositepk.TechPk;
 
 import javax.persistence.*;
@@ -9,8 +11,10 @@ import javax.persistence.*;
 @Data
 @Table(name = "coll_tech")
 @IdClass(TechPk.class)
+@AllArgsConstructor
+@NoArgsConstructor
 public class Tech {
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Id
     @JoinColumn(name="coll_no")
     private MyCollection coll;

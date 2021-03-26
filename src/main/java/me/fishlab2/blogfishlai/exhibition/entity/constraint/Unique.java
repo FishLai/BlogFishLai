@@ -25,7 +25,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.List;
 
-@Target({ElementType.FIELD})
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy=Unique.UniqueValidator.class)
 public @interface Unique {
@@ -33,7 +33,7 @@ public @interface Unique {
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 
-    class UniqueValidator implements ConstraintValidator<Unique, String> {
+    class UniqueValidator implements ConstraintValidator<Unique, MyCollection> {
         private Logger logger = LogManager.getLogger(this.getClass());
 
         private EntityManagerFactory emFactory = Persistence.createEntityManagerFactory(
@@ -45,19 +45,19 @@ public @interface Unique {
         }
 
         @Override
-        public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-            if(s == null) return false;
+        public boolean isValid(MyCollection mC, ConstraintValidatorContext constraintValidatorContext) {
+            if(mC.getName() == null) return false;
 
             /*
              * 被使用過則回傳未通過較驗訊息
              */
-            boolean isUnique = !isUsed(s);
+            boolean isUnique = !isUsed(mC.getId(), mC.getName());
             if(!isUnique) {
                 constraintValidatorContext.disableDefaultConstraintViolation();
                 constraintValidatorContext.buildConstraintViolationWithTemplate(
                         "{me.fishlab2.blogfishlai.exhibition.entity.constraint.Unique.message}" +
                                 "作品名稱重複"
-                ).addConstraintViolation();
+                ).addPropertyNode("name").addConstraintViolation();
             }
             return isUnique;
         }
@@ -65,17 +65,20 @@ public @interface Unique {
         /*
          * 回傳名稱是否被用過
          */
-        private boolean isUsed(String s) {
+        private boolean isUsed(long id, String s) {
             String collName = s.replaceAll("[\\h\\s\\v\\p{Punct}]", "");
             Session session = this.em.unwrap(Session.class);
 
             DetachedCriteria criteria = DetachedCriteria
                     .forClass(MyCollection.class)
                     .setProjection(Projections.rowCount())
-                    .add(Restrictions.sqlRestriction(
-                            "REGEXP_REPLACE({alias}.coll_name, '[[:space:][:punct:]]', '') = (?)",
-                            collName,
-                            StringType.INSTANCE));
+                    .add(Restrictions.conjunction()
+                            .add(Restrictions.sqlRestriction(
+                                "REGEXP_REPLACE({alias}.coll_name, '[[:space:][:punct:]]', '') = (?)",
+                                collName,
+                                StringType.INSTANCE))
+                            .add(Restrictions.ne("id", id))
+                    );
             Number count = (Number) criteria.getExecutableCriteria(session)
                     .list()
                     .iterator()

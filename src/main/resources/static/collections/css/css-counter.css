@@ -1,37 +1,87 @@
 
-#coll-container {
-    display: flex;
-    justify-content: start;
-    flex-wrap: wrap;
+/*
+ * 容器 - 所有展品
+ */
+#container-colls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    align-items: center;
 }
-
-.counter {
+/*
+ * 容器 - 個別展品
+ */
+.container-coll {
     width: 400px;
     height: 300px;
     margin: 5px;
     border-width: 2px;
     border-style: solid;
     border-color: hsl(10, 30%, 50%);
-}
 
-.counter:hover {
-    box-shadow: 5px 10px 5px hsl(10, 20%, 70%);
-}
-
-.counter-description {
+    display:flex;
+    flex-direction:column;
     text-align:center;
+
+    transition: box-shadow 0.4s ease;
+}
+.container-coll:hover, .stuck {
+    box-shadow: 20px 10px 8px hsl(10, 20%, 70%);
 }
 
+/*
+ * 容器 - 展品封面
+ */
+.container-cover {
+    text-align: center;
+    height: 80%;
+}
+/*
+ * 元素 - 影像 - 展品封面
+ */
+.img-cover {
+    max-height: 100%;
+    width:100%
+}
+
+/*
+ * 容器 - 作品名稱
+ */
+.container-coll-name {
+    height: 20%;
+    text-align:center;
+    display:flex;
+    justify-content:center;
+}
+
+.coll-name {
+    margin: auto !important;
+    font-size: 1.5rem;
+    color: hsl(0, 30%, 50%);
+}
+
+/*
+ * 容器，增加按鈕
+ */
 .box-btn {
     margin:5px;
-    height: 300px;
-    width: 200px;
+    height: 200px;
+    width: 250px;
     box-sizing: border-box;
     opacity:60%;
 }
-
 .box-btn:hover {
     opacity: 40%;
+}
+
+/*
+ * 元件，增加按鈕
+ */
+.btn {
+    cursor:pointer;
+}
+.btn:hover {
+    opacity: 50%;
 }
 
 .btn-add-coll {
@@ -41,5 +91,49 @@
     border-width:5px;
     border-style: dashed;
     border-color: hsl(30, 70%, 20%);
-    cursor:pointer;
+}
+
+.btn-icon {
+    height:100%;
+    font-size: 2rem;
+    font-weight: bold;
+    background-color: transparent;
+    border-width:0;
+    outline:0;
+}
+
+/*
+ * 區塊，展品簡介
+ */
+#container-description {
+    font-size: x-large;
+    position: sticky;
+    top: 10%;
+}
+.des-title {
+    font-size: 3.5rem !important;
+    text-align: center;
+}
+
+.container-des-content {
+}
+
+.container-des-date {
+    font-style: italic;
+    font-weight: bold;
+    color: hsl(90, 80%, 30%);
+    text-align: right;
+}
+
+.container-des-label {
+    color: hsl(235deg 75% 40%);
+    font-weight: bold;
+    text-align: right;
+    transform: skewX(15deg) translateX(-5px);
+}
+.des-label {
+    border-radius: 4px 20px 10px 20px;
+    background-color: hsl(180deg 70% 70%);
+    margin: 2px;
+    padding: 3px;
 }

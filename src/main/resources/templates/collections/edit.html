@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
 
-    <link rel="stylesheet" href="../collections/css/base.css">
-    <link rel="stylesheet" href="../collections/css/css-addColl.css">
+    <link rel="stylesheet" th:href="@{/collections/css/base.css}">
+    <link rel="stylesheet" th:href="@{/collections/css/css-addColl.css}">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/26.0.0/inline/ckeditor.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -13,10 +13,12 @@
     <title>Add a Collection</title>
 </head>
 <body>
-<form th:action="@{/mycollection/add}" th:object="${myCollection}" method="post" id="form-add">
+<form th:object="${myCollection}" th:action="${isEdit} ? @{/mycollection/{name}/edit(name=${myCollection.name})} : @{/mycollection/add}"
+      th:method="POST" id="form-add">
     <div id="fields-container">
+        <input th:if="${isEdit}" type="hidden" name="id" th:value="*{id}">
         <div id="imgVue" class="field uploadbox">
-            <span style="display:none;"><input v-on="{change:previewCover}" id="f-upload" type="file" accept="image/*"></span>
+            <span style="display:none;"><input v-on="{change:previewCover}" th:post-to="@{/mycollection/saveImg}" id="f-upload" type="file" accept="image/*"></span>
             <template v-if="!isImgUploaded">
                 <svg v-on="{click:uploadImg}" viewbox="0 0 200 200" width="100%" height="100%" preserveAspectRatio="none" >
                     <g stroke="hsl(15, 20%, 70%)" stroke-width="3px" fill="none" stroke-dasharray="5, 5">
@@ -25,7 +27,7 @@
                         <path d="M3 197 L197 3"/>
                     </g>
                 </svg>
-                <div id="addCoverHint" v-on="{click:uploadImg}" class="btn-add">
+                <div id="addCoverHint" v-on="{click:uploadImg}" class="btn btn-add">
                     <span>上傳作品封面</span>
                 </div>
                 <div class="warn" v-if="uploadfailed">
@@ -33,9 +35,10 @@
                 </div>
             </template>
             <template v-else>
-                <img id="previewCover" th:src="${imgTmp}" class="btn-add"/>
+                <img id="previewCover" th:src="*{coverPath} != null ? @{/}+${myCollection.coverPath} : ${imgTmp}" class="btn btn-add" v-on="{click:uploadImg}"/>
             </template>
-            <input type="hidden" name="imgTmp" th:value="${imgTmp}">
+            <input type="hidden" name="imgTmp" th:value="*{coverPath} != null ? @{/}+${myCollection.coverPath} : ${imgTmp}">
+            <input type="hidden" name="coverPath" th:value="${myCollection?.coverPath}"/>
         </div>
         <div class="field coll-name">
             <span>作品名稱：</span>
@@ -46,7 +49,7 @@
             <span>製作開始：</span>
             <span>
                 <input type="Month" min="1900-01" class="f-month" name="strStartDate"
-                         th:value="*{startDate} != null ? *{startDate} : ${{startDate}}" required/>
+                         th:value="*{startDate} != null ? ${#dates.format(myCollection.startDate, 'yyyy-MM')} : ${{startDate}}" required/>
             </span>
 
             <span class="warn" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}">日期有誤</span>
@@ -54,7 +57,7 @@
         <div class="field">
             <span>製作結束：</span>
             <span><input name="strStopDate" type="Month" min="1900-01" class="f-month"
-                         th:value="*{stopDate} != null ? *{stopDate} : ${{stopDate}}"/></span>
+                         th:value="*{stopDate} != null ? ${#dates.format(myCollection.stopDate, 'yyyy-MM')} : ${{stopDate}}"/></span>
             <span class="warn" th:if="${#fields.hasErrors('stopDate')}" th:errors="*{stopDate}"></span>
         </div>
         <div class="field isTextarea">
@@ -65,33 +68,29 @@
             <hr>
         </div>
         <div class="teches" id="TechLabelVue">
-            <span style="font-size:14px;">Sill Labels : </span>
-            <tech-label th:each="tech, iter : ${myCollection.techList}"
-                th:componentid="'tech' + ${iter.index}" th:techname="${tech.getName()}"
-                        v-on="{callOutRemoveLabel:removeLabelData}"
-            ></tech-label>
-<!--            <template v-for="tech in labels">-->
-<!--                <tech-label :component-id="tech.id" :tech-name="tech.name"></tech-label>-->
-<!--            </template>-->
+            <span style="font-size:14px;">Relative Labels : </span>
+            <input type="hidden"
+                   name="ipt-labels"
+                   th:value="${T(me.fishlab2.blogfishlai.exhibition.service.impl.MyCollectionServiceImpl).listEntityName2Str(myCollection.getTechList())}"/>
             <tech-label v-for="tech in labels"
                         :componentid="tech.id"
                         :techname="tech.name"
                         v-on="{callOutRemoveLabel:removeLabelData}"
             ></tech-label>
 
-            <span><button type="button" v-on="{click:appendLabel}" class="btn-add btn-add-label">+ Skill</button></span>
+            <span><button id="btn-add-label" type="button" v-on="{click:appendLabel}" class="btn btn-add btn-add-label">+ Skill</button></span>
         </div>
         <div class="field form-btnbox">
             <span>
-                <button class="btn-submit" type="button" id="btn-submit">新增作品</button>
+                <button class="btn btn-submit" type="button" id="btn-submit" th:text="${isEdit}? 提交修改: 新增作品"></button>
             </span>
             <span>
-                <button class="btn-return" th:onclick="javascript:window.location='../mycollection'" type="button">返回</button>
+                <button class="btn btn-return" th:onclick="|location.href='@{/mycollection}'|" type="button">返回</button>
             </span>
         </div>
     </div>
 </form>
-
+<!-- ToDo clean code -->
 <script>
     var date = new Date();
     var tY = date.getFullYear(); //this year
@@ -115,6 +114,15 @@
         let ta = document.getElementById("ta");
         ta.value = myEditor.getData();
         let form = document.getElementById("form-add");
+
+        //
+        // 蒐集使用技巧
+        //
+        let objLabels = techLabels.labels;
+        let techList = objLabels.map(o => o.name);
+        document.querySelector("input[name=ipt-labels]").value = techList.toString();
+
+
         form.submit();
 
         //
@@ -147,8 +155,8 @@
 
 </script>
 
-<script type="text/javascript" src="../collections/js/vue-addform-img.js"></script>
-<script type="text/javascript" src="../js/ckeditor-collAbs.js"></script>
-<script type="text/javascript" src="../collections/js/vue-techlabel.js"></script>
+<script type="text/javascript" th:src="@{/collections/js/vue-addform-img.js}"></script>
+<script type="text/javascript" th:src="@{/js/ckeditor-collAbs.js}"></script>
+<script type="text/javascript" th:src="@{/collections/js/vue-techlabel.js}"></script>
 </body>
 </html>

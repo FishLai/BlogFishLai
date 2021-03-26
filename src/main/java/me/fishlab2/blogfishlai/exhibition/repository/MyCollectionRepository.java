@@ -13,10 +13,9 @@ import java.util.List;
 @Repository
 public interface MyCollectionRepository extends JpaRepository<MyCollection, Long> {
 
-    final String FIND_VALUES = "SELECT ";
-
     public MyCollection findById(long id);
     public void deleteById(long id);
+    public MyCollection findByName(String string);
 
     @Query(value="SELECT mc.coll_name FROM my_collection mc", nativeQuery=true)
     List<String> findNames();

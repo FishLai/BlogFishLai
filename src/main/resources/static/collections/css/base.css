@@ -18,6 +18,10 @@ img {
     width:100%;
 }
 
+i {
+    font-style: normal;
+}
+
 .welcome {
     text-align:center;
 }
@@ -30,12 +34,14 @@ section.container {
 }
 
 .left-side {
-    flex-grow:1;
+    /*flex-grow:1;
+    */
     min-width: 2.4525%;
 }
 
 .main-content {
-    flex-grow: 3;
+    /*flex-grow: 3;
+    */
     min-width: 64.6875%
 }
 

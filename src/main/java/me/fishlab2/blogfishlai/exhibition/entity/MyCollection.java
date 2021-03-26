@@ -15,6 +15,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -26,7 +27,7 @@ import java.util.regex.Pattern;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Validated
+@Unique
 public class MyCollection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +36,6 @@ public class MyCollection {
 
     @NotBlank(message="請填入作品名稱")
     @Column(name="coll_name", nullable=false, columnDefinition="varchar(40) unique")
-    @Unique
     private String name;
 
     @DateTimeFormat(pattern = "yyyy-MM")
@@ -58,6 +58,7 @@ public class MyCollection {
     @Column(name="cover_path", columnDefinition="varchar(150)")
     private String coverPath;
 
+    @Valid
     @UniqueElements(message="出現重複技術名稱")
     @OneToMany(cascade=CascadeType.ALL, mappedBy="coll")
     @ToString.Exclude

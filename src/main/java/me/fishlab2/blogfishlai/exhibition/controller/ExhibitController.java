@@ -14,29 +14,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Valid;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.constraints.Pattern;
-import javax.validation.executable.ExecutableValidator;
+import javax.websocket.server.PathParam;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Set;
 
 @Controller
 @RequestMapping("mycollection")
@@ -60,25 +47,41 @@ public class ExhibitController {
 
         ModelAndView mav = new ModelAndView("collections/list");
         mav.addObject("collList", collList);
+        mav.addObject("mCServ", mCServ);
+
         return mav;
     }
 
-    @RequestMapping("/add")
-    public ModelAndView addColl() {
+    @RequestMapping(value= {"/add", "/{name}/edit"}, method=RequestMethod.GET)
+    public ModelAndView addColl(@PathVariable(required=false, name="name") String collName) {
+        boolean isEdit = collName == null ? false: true;
+
         ModelAndView mav = new ModelAndView("collections/edit");
-        mav.addObject("myCollection", new MyCollection());
-        mav.addObject("imgTmp", "");
+        if(!isEdit) {
+            mav.addObject("myCollection", new MyCollection());
+            mav.addObject("imgTmp", "");
+            mav.addObject("isEdit", !isEdit);
+        } else if (isEdit) {
+            mav.addObject("myCollection", myCollRepository.findByName(collName));
+            mav.addObject("isEdit", isEdit);
+        }
         return mav;
     }
 
-    @PostMapping("/add")
-    public String saveCollection(@RequestParam(value="strStartDate") String startDate,
+    @PostMapping(value = {"/add", "/{name}/edit"})
+    public String saveCollection(@PathVariable(required=false, name="name") String collName,
+                                 @RequestParam(value="strStartDate") String startDate,
                                  @RequestParam(value="strStopDate") String stopDate,
                                  @RequestParam(value="imgTmp") String imageTemp,
+                                 @RequestParam(value="ipt-labels") String strTeches,
                                  @Validated MyCollection myCollection,
                                  BindingResult bindingResult,
                                  RedirectAttributes attr,
                                  Model model) throws NoSuchMethodException {
+        /*
+         * judge 是新增還是修改
+         */
+        boolean isEdit = collName == null? false: true;
         //Todo 重寫日期較驗方式，
         // 以 globalexceptionhandler @initbinder 實現較驗
         // controller 用parameter @Pattern、@NotEmpty 較驗日期輸入格式
@@ -87,6 +90,7 @@ public class ExhibitController {
         if(dateError != null)
             bindingResult.rejectValue(dateError.get("property"), "error.myCollection", dateError.get("msg"));
 
+        if(!strTeches.isEmpty()) myCollection.setTechList(mCServ.str2List(strTeches, myCollection));
 
         if(bindingResult.hasErrors()) {
             /*
@@ -96,11 +100,13 @@ public class ExhibitController {
             model.addAttribute("startDate", startDate);
             model.addAttribute("stopDate", stopDate);
             model.addAttribute("imgTmp", imageTemp);
+            model.addAttribute("isEdit", isEdit);
+            logger.info("hasViolation");
             return "collections/edit";
         }
 
         /*
-         * 通過較驗後社設定日期
+         * 通過較驗後設定日期
          */
         HashMap<String, Date> dates = mCServ.doTransformDate(startDate, stopDate);
         myCollection.setStartDate(dates.get("startDate"));
@@ -112,6 +118,7 @@ public class ExhibitController {
         if(storageServiceImpl.getDistinationFile() != null) {
             myCollection.setCoverPath(storageServiceImpl.persistFile(myCollection.getName()));
         }
+        logger.info("edit");
 
         myCollRepository.save(myCollection);
         return "redirect:/mycollection";
@@ -123,8 +130,22 @@ public class ExhibitController {
     @PostMapping("/saveImg")
     @ResponseBody
     public JSONObject handleFileUpload(@RequestParam("file") MultipartFile file) {
+        /*
+         * Todo 永久儲存檔名改成cover以便換照片直接覆蓋
+         */
         HashMap<String, String> result = storageServiceImpl.store(file, "temp");
 
         return JSONObject.fromObject(result);
+    }
+
+    /*
+     * 刪除展品
+     */
+    @DeleteMapping("/delete/{id}")
+    public String deleteCollection(@PathVariable long id) {
+
+        myCollRepository.deleteById(id);
+
+        return "redirect:/mycollection";
     }
 }

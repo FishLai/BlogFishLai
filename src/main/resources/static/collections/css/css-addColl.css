@@ -139,8 +139,13 @@ textarea {
 /*
  * 按鈕樣式 - 按鈕基本樣式
  */
-.btn-add {
+ .btn {
     cursor: pointer;
+ }
+ .btn:hover {
+    opacity: 70%
+ }
+.btn-add {
 }
 
 /*
@@ -151,9 +156,7 @@ textarea {
     border-radius: 6px;
     background-color: hsl(210, 80%, 60%);
     color: hsl(0, 20%, 85%);
-}
-.btn-add-label:hover {
-    opacity: 70%;
+    font-size: 1.2rem !important;
 }
 .btn-add-label:focus {
     border: 0.5px solid hsl(0, 50%, 80%);
@@ -162,8 +165,32 @@ textarea {
 
 /*
  * 標籤樣式 - 技巧標籤
- * Todo 標籤樣式還沒完成
  */
 .label-tech {
+    padding: 2px;
+    margin: 0 5px;
+    border-radius:7px;
+    background-color: hsl(0, 20%, 90%);
+}
 
+/*
+ * 標籤樣式 - 輸入區塊
+ */
+.label-span {
+    font-size:1.2rem;
+    background-color: hsl(0, 30%, 80%);
+    border-radius: 5px;
+}
+.label-span:focus {
+    outline:0.1px;
+}
+
+/*
+ * 按鈕 - 刪除標籤
+ */
+.btn-delete-label {
+    font-size: 1.2rem !important;
+    border-width: 0;
+    background-color: hsl(0, 30%, 80%);
+    border-radius: 5px;
 }

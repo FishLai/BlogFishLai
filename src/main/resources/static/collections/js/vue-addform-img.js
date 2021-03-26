@@ -19,10 +19,11 @@ var imgUploadVue = new Vue({
         },
         //上傳照片後處理預覽
         previewCover: function(e) {
+            let postTo = e.target.getAttribute("post-to");
             if(e.target.files && e.target.files[0]) {
                 let form = new FormData();
                 form.append("file", e.target.files[0]);
-                axios.post("./saveImg", form, {headers: {"Content-Type": "multipart/form-data"}})
+                axios.post(postTo, form, {headers: {"Content-Type": "multipart/form-data"}})
                     .then(res => {
                     	let status = res.data.status == "true";
                         //

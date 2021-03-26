@@ -1,11 +1,14 @@
 package me.fishlab2.blogfishlai.exhibition.service.impl;
 
 import me.fishlab2.blogfishlai.exhibition.entity.MyCollection;
+import me.fishlab2.blogfishlai.exhibition.entity.Tech;
 import me.fishlab2.blogfishlai.exhibition.entity.constraint.MyDateConstraint;
 import me.fishlab2.blogfishlai.exhibition.repository.MyCollectionRepository;
 import me.fishlab2.blogfishlai.exhibition.service.MyCollectionService;
+import org.apache.commons.collections.Bag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.collection.internal.PersistentBag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +22,7 @@ import javax.validation.executable.ExecutableValidator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.Spliterator.ORDERED;
 
@@ -108,5 +112,30 @@ public class MyCollectionServiceImpl implements MyCollectionService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /*
+     * handle the tech names from front end
+     */
+    public List<Tech> str2List(String strTeches, MyCollection mC) {
+        List<String> lsTech = Arrays.asList(strTeches.split(","));
+        Iterator<String> iterTech = lsTech.iterator();
+
+        List<Tech> teches = new ArrayList<Tech>();
+
+        while(iterTech.hasNext()) {
+            teches.add(new Tech(mC, iterTech.next()));
+        }
+        return teches;
+    }
+
+    /*
+     * ToDo
+     */
+    public final static String listEntityName2Str(ArrayList<Tech> lsEntity) {
+        return lsEntity == null ?
+                "" : lsEntity.stream()
+                        .map((n) -> String.valueOf(n.getName()))
+                        .collect(Collectors.joining(","));
     }
 }

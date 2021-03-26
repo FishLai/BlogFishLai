@@ -20,6 +20,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -51,7 +52,14 @@ public class ExhibitionCRUDTest {
 
 
     @Test
-    public void insertTest() {
+    public void findCollByIDTest() {
+        MyCollection mC = myCollectionRepository.findById(260);
+        logger.info(mC);
+        List<Tech> techList = new ArrayList<Tech>(mC.getTechList());
+        Iterator<Tech> iterTech = mC.getTechList().iterator();
+        while(iterTech.hasNext()) techList.add(iterTech.next());
+        logger.info(techList.getClass());
+        logger.info(techList);
     }
 
     @Test
