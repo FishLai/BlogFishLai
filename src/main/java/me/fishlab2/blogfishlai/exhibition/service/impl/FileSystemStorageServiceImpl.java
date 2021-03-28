@@ -120,7 +120,7 @@ public class FileSystemStorageServiceImpl implements StorageService {
          * 先去除奇怪的符號與空白成"_"
          * 以便創建新資料夾永久存存檔案
          */
-        String fn = name.replaceAll("[\\W_]", "_");
+        String fn = name.replaceAll("[\\W_]", "");
 
         Path fnPath = this.rootLoc.resolve(fn);
         init(fnPath); //try create folder
@@ -130,13 +130,13 @@ public class FileSystemStorageServiceImpl implements StorageService {
              * distinationFile 會是tmp 圖檔路徑
              */
             Files.move(this.distinationFile,
-                    fnPath.resolve(this.distinationFile.getFileName()).toAbsolutePath(),
+                    fnPath.resolve("cover.jpg").toAbsolutePath(),
                     StandardCopyOption.REPLACE_EXISTING);
 
             /*
              * 返回相對路徑給資料庫儲存
              */
-            return ("files/" + fn + "/" + this.distinationFile.getFileName());
+            return ("files/" + fn + "/" + "cover.jpg");
         } catch (IOException e) {
             e.printStackTrace();
         }

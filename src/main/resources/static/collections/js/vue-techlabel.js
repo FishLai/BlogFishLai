@@ -35,9 +35,11 @@ var TechLabel = {
                 // 沒有重複存入 input 中
                 //
                 } else {
-                    console.log("are you fire twice?");
+
+
                     let index = labels.findIndex(l => l.id == id);
                     this.$parent.labels[index].name = sp_ipt;
+                    e.target.innerText = sp_ipt;
                 }
             }
         },
@@ -73,7 +75,6 @@ var techLabels = new Vue({
     },
     mounted: function () {
         let strLabels = document.querySelector("input[name=ipt-labels]").value;
-        console.log("are you fire every update?");
         if(strLabels != "") {
             strLabels = strLabels.split(",");
             strLabels.forEach((t, idx) => { this.labels.push({id: "tech"+idx, name: t}) });

@@ -148,4 +148,7 @@ public class ExhibitController {
 
         return "redirect:/mycollection";
     }
+    /*
+     * Todo del the tech at the same time remove the label
+     */
 }
