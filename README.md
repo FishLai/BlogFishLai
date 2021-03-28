@@ -1,40 +1,28 @@
-##要確認
-儲存RTF資料進去varchar2欄位，長度問題(目前先調到對大位元數4000)，  
-假如有問題可考慮更大的欄位。  
-
-ConstraintTarget.IMPLICIT 的使用。
-
-## 進度
->表單驗證邏輯  
->> @interface MyDateConstraint 日期驗證註譯  
->>
->>>@interface, the keyword to define annotation type  
->>
->> 
-# BlogFishLai
-> develop my blog
-### start from：2021/02/23 
-## 想法：
-> 想要一個展示作品的展示櫃，沒有一個自己設計規畫的作品，我都很難說服雇用自己  
-> 在剛開始的階段，在解決別人的問題之前，我應該要能解決自己的問題。  
-> 練習撰寫測試  
-> 與VueJS 整合，想想作品展示似乎不需要 SEO，
-> 所以暫不考慮JS 生成的頁面，
-> 對搜尋引擎不友善的問題
+# 實作Spring MVC 網站
+> ## 目標  
+> 提供大家一個能夠展現自我創作的作品上架平台，
+> 以作品為核心，  
+> 以部落格的方式紀錄且深入探討作品中使用的技術。  
 > 
+### start from：2021/02/23 
+> ## 目前已實現
+> 已完成簡易 CRUD 功能，包含 hibernate 驗證表單。  
+> ### 使用技術與工具
+>> Spring boot、SpringMVC、Spring Data JPA、Java、  
+>> Thymeleaf、JavaScript、VueJS、CSS、HTML、  
+>> Oracle SQL
+>> 
 
-## 目的：
-> 以 spring MVC 實作自己的部落格網站  
->> ###功能
->> 公開與私人展示分區
->> CRUD 文章、留言區  
 
+## 想法：
+> 先透過自製作品展示櫃，  
+> 在剛開始的階段，在能解決別人的問題之前，我應該要能解決自己的問題。  
+>
 
-## 預計使用：
-> VueJS  
-> `thymeleaf、html、css、javascript`  
-> `java、spring-boot、jpa`  
-> `oracle database 18c`
+##待實現功能：
+> 訪客與會員功能  
+> 技術文部落格功能
+
 
 ## 參閱
 > `【急速開發 Java 大型系統 Spring Boot】`  
@@ -43,13 +31,15 @@ ConstraintTarget.IMPLICIT 的使用。
 ## 目前套件清單
 `spring-boot-starter-data-jpa 負責處理資料庫溝通`  
 `spring-boot-starter-thymeleaf html模板工具`  
-`spring-boot-starter-validation ??驗證器??`  
-`spring-boot-starter-web spring MVC 網站開發模板`  
+`spring-boot-starter-validation 資料驗證器`  
+`spring-boot-starter-web spring MVC 網站開發框架`  
 `ojdbc oracle 資料庫驅動`  
 `lombok 簡化程式碼工具`  
-`spring-boot-starter-test 測試工具`  
+`spring-boot-starter-test 開發測試工具`  
 `spring-boot-devtools 熱部屬工具`
 
+
+# <i>P.S.</i>
 ##Live Server setup
 ###maven
 spring-boot-devtools  

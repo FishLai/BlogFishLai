@@ -49,6 +49,9 @@ public class MyCollection {
     @Column(name="stop_date", nullable=true)
     private Date stopDate;
 
+    /*
+     * Todo 確認欄位大小是否夠用
+     */
     @NotBlank(message="拜託跟我說說此作品")
     @NotEmpty(message="拜託跟我說說此作品")
     @NotNull(message="拜託跟我說說此作品")
