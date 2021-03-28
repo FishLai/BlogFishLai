@@ -6,7 +6,7 @@
 > 
 ### start from：2021/02/23 
 > ## 目前已實現
-> 已完成簡易 CRUD 功能，包含 hibernate 驗證表單。  
+> 已完成上架作品的 CRUD 功能，包含 hibernate 驗證表單。  
 > ### 使用技術與工具
 >> Spring boot、SpringMVC、Spring Data JPA、Java、  
 >> Thymeleaf、JavaScript、VueJS、CSS、HTML、  
