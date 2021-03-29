@@ -6,12 +6,22 @@
 > 
 ### start from：2021/02/23 
 > ## 目前已實現
-> 已完成上架作品的 CRUD 功能，包含 hibernate 驗證表單。  
+> 已完成上架作品的 CRUD 功能，包含 hibernate 驗證表單。
 > ### 使用技術與工具
 >> Spring boot、SpringMVC、Spring Data JPA、Java、  
 >> Thymeleaf、JavaScript、VueJS、CSS、HTML、  
 >> Oracle SQL
 >> 
+> ## 操作畫面 Demo
+> ### 首頁
+> ![image] https://github.com/FishLai/BlogFishLai/blob/master/src/main/resources/static/img-app-intro/collection_homePage.png  
+> ### 新增
+> ![image] https://github.com/FishLai/BlogFishLai/blob/master/src/main/resources/static/img-app-intro/collection_addPage.png  
+> ### 較驗
+> ![image] https://github.com/FishLai/BlogFishLai/blob/master/src/main/resources/static/img-app-intro/collection_add_showViolation.png  
+> ### 完成新增
+> ![image] https://github.com/FishLai/BlogFishLai/blob/master/src/main/resources/static/img-app-intro/collection_afterAdd.png
+> 
 
 
 ## 想法：
