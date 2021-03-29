@@ -14,13 +14,13 @@
 >> 
 > ## 操作畫面 Demo
 > ### 首頁
-> ![image] (https://github.com/FishLai/BlogFishLai/blob/master/src/main/resources/static/img-app-intro/collection_homePage.png)  
+> ![image](https://github.com/FishLai/BlogFishLai/blob/master/src/main/resources/static/img-app-intro/collection_homePage.png)  
 > ### 新增
-> ![image] (https://github.com/FishLai/BlogFishLai/blob/master/src/main/resources/static/img-app-intro/collection_addPage.png)  
+> ![image](https://github.com/FishLai/BlogFishLai/blob/master/src/main/resources/static/img-app-intro/collection_addPage.png)  
 > ### 較驗
-> ![image] (https://github.com/FishLai/BlogFishLai/blob/master/src/main/resources/static/img-app-intro/collection_add_showViolation.png)  
+> ![image](https://github.com/FishLai/BlogFishLai/blob/master/src/main/resources/static/img-app-intro/collection_add_showViolation.png)  
 > ### 完成新增
-> ![image] (https://github.com/FishLai/BlogFishLai/blob/master/src/main/resources/static/img-app-intro/collection_afterAdd.png)  
+> ![image](https://github.com/FishLai/BlogFishLai/blob/master/src/main/resources/static/img-app-intro/collection_afterAdd.png)  
 > 
 
 
