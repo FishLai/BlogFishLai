@@ -50,9 +50,8 @@ public class FileSystemStorageServiceImpl implements StorageService {
     @Override
     public void store(MultipartFile file) {
         try {
-            if(file.isEmpty()){
-                throw new StorageException("Failed to store empty file");
-            }
+            if (file.isEmpty()) throw new StorageException("Failed to store empty file");
+
             if (!constraintFileType(file)) throw new StorageException("只支援 image/jpeg 格式喔");
 
             Path destinationFile = this.distinationFile =  this.distinationPath.resolve(
@@ -96,7 +95,12 @@ public class FileSystemStorageServiceImpl implements StorageService {
             return res;
         } catch (StorageException e) {
             try {
-                Files.delete(this.distinationFile);
+                /*
+                 * todo 釐清原因， catch my exception but the path is null
+                 */
+                if(this.distinationFile != null) {
+                    Files.delete(this.distinationFile);
+                }
                 this.distinationFile = null;
             } catch (IOException ioException) {
                 /*

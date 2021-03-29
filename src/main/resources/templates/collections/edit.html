@@ -36,9 +36,9 @@
             </template>
             <template v-else>
                 <img id="previewCover" th:src="*{coverPath} != null ? @{/}+${myCollection.coverPath} : ${imgTmp}" class="btn btn-add" v-on="{click:uploadImg}"/>
+                <input type="hidden" th:field="*{coverPath}" name="coverPath" th:value="${myCollection?.coverPath}"/>
             </template>
             <input type="hidden" name="imgTmp" th:value="*{coverPath} != null ? @{/}+${myCollection.coverPath} : ${imgTmp}">
-            <input type="hidden" th:field="*{coverPath}" name="coverPath" th:value="${myCollection?.coverPath}"/>
         </div>
         <div class="field coll-name">
             <span>作品名稱：</span>

@@ -56,11 +56,12 @@ public class ExhibitController {
     public ModelAndView addColl(@PathVariable(required=false, name="name") String collName) {
         boolean isEdit = collName == null ? false: true;
 
+
         ModelAndView mav = new ModelAndView("collections/edit");
         if(!isEdit) {
             mav.addObject("myCollection", new MyCollection());
             mav.addObject("imgTmp", "");
-            mav.addObject("isEdit", !isEdit);
+            mav.addObject("isEdit", isEdit);
         } else if (isEdit) {
             mav.addObject("myCollection", myCollRepository.findByName(collName));
             mav.addObject("isEdit", isEdit);
@@ -90,18 +91,19 @@ public class ExhibitController {
         if(dateError != null)
             bindingResult.rejectValue(dateError.get("property"), "error.myCollection", dateError.get("msg"));
 
+        /*
+         * strTech 如是空值""，表示使用者沒有提示使用技術
+         */
         if(!strTeches.isEmpty()) myCollection.setTechList(mCServ.str2List(strTeches, myCollection));
 
         if(bindingResult.hasErrors()) {
             /*
              * Todo find the way resolve XHR 回傳的response 沒有執行內部js 的問題
              */
-            logger.info(imageTemp);
             model.addAttribute("startDate", startDate);
             model.addAttribute("stopDate", stopDate);
-            model.addAttribute("imgTmp", imageTemp);
+            model.addAttribute("imgTmp", imageTemp == ""? null: imageTemp);
             model.addAttribute("isEdit", isEdit);
-            logger.info("hasViolation");
             return "collections/edit";
         }
 
