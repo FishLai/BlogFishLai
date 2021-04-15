@@ -22,6 +22,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.websocket.server.PathParam;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -53,7 +55,7 @@ public class ExhibitController {
     }
 
     @RequestMapping(value= {"/add", "/{name}/edit"}, method=RequestMethod.GET)
-    public ModelAndView addColl(@PathVariable(required=false, name="name") String collName) {
+    public ModelAndView editColl(@PathVariable(required=false, name="name") String collName) {
         boolean isEdit = collName == null ? false: true;
 
 
@@ -119,6 +121,16 @@ public class ExhibitController {
          */
         if(storageServiceImpl.getDistinationFile() != null) {
             myCollection.setCoverPath(storageServiceImpl.persistFile(myCollection.getName()));
+            storageServiceImpl.setDistinationFileNull();
+        }
+
+        if(myCollection.getCoverPath() != null) {
+            Path coverPath = Paths.get(myCollection.getCoverPath());
+            String oldFolder = coverPath.getParent().getFileName().toString();
+            String nowFn = myCollection.getName().replaceAll("[\\p{Punct}\\s]", "");
+            if(!oldFolder.equals(nowFn)) {
+                myCollection.setCoverPath(storageServiceImpl.moveFiles(oldFolder, nowFn));
+            }
         }
         logger.info("edit");
 
@@ -144,8 +156,9 @@ public class ExhibitController {
      * 刪除展品
      */
     @DeleteMapping("/delete/{id}")
-    public String deleteCollection(@PathVariable long id) {
+    public String deleteCollection(@PathVariable long id, @RequestParam(value="collName") String collName) {
 
+        storageServiceImpl.deleteCollFolder(collName);
         myCollRepository.deleteById(id);
 
         return "redirect:/mycollection";

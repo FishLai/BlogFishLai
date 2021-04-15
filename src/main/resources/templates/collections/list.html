@@ -5,7 +5,7 @@
 
     <link rel="stylesheet" href="collections/css/base.css">
     <link rel="stylesheet" href="collections/css/css-counter.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="js/vue.min.js"></script>
     <title>Code Collections</title>
 </head>
 <body>
@@ -37,6 +37,7 @@
                     </div>
                     <h1 class="coll-name" th:text="${collName}"></h1>
                     <form class="container-btn" th:method="delete" th:action="@{mycollection/delete/{id}(id=${item.id})}">
+                        <input type="hidden" name="collName" th:value="${collName}">
                         <button type="submit" class="btn btn-icon"><i>&#128465</i></button>
                     </form>
                 </div>

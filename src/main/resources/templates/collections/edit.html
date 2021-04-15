@@ -5,7 +5,7 @@
 
     <link rel="stylesheet" th:href="@{/collections/css/base.css}">
     <link rel="stylesheet" th:href="@{/collections/css/css-addColl.css}">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script th:src="@{/js/vue.min.js}"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/26.0.0/inline/ckeditor.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
@@ -35,10 +35,10 @@
                 </div>
             </template>
             <template v-else>
-                <img id="previewCover" th:src="*{coverPath} != null ? @{/}+${myCollection.coverPath} : ${imgTmp}" class="btn btn-add" v-on="{click:uploadImg}"/>
-                <input type="hidden" th:field="*{coverPath}" name="coverPath" th:value="${myCollection?.coverPath}"/>
+                <img id="previewCover" th:src="*{coverPath} != '' ? @{/}+${myCollection.coverPath} : ${imgTmp}" class="btn btn-add" v-on="{click:uploadImg}"/>
+                <input type="hidden" th:field="*{coverPath}" name="coverPath" th:value="${myCollection.coverPath}"/>
             </template>
-            <input type="hidden" name="imgTmp" th:value="*{coverPath} != null ? @{/}+${myCollection.coverPath} : ${imgTmp}">
+            <input type="hidden" name="imgTmp" th:value="*{coverPath} != '' ? @{/}+${myCollection?.coverPath} : ${imgTmp}">
         </div>
         <div class="field coll-name">
             <span>作品名稱：</span>

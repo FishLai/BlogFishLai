@@ -7,7 +7,7 @@ var imgUploadVue = new Vue({
     },
     mounted: function() {
         let base64Img = document.querySelector("input[name=imgTmp]").value;
-        if(base64Img != "") {
+        if(base64Img != "/null") {
             this.isImgUploaded = true;
             this.uploadfailed = false;
         }
